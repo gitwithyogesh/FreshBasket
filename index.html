@@ -7,6 +7,52 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="color-scheme" content="light dark">
     <link rel="stylesheet" href="style1.css" />
+    <link rel="icon" type="image/png" href="image.png">
+
+    <style>
+        /* =====================
+        TOP CENTER TOAST
+        ===================== */
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            padding: 14px 22px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 15px 15px #faf9fb4d;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.35s ease;
+            z-index: 9999;
+        }
+
+        /* Show toast */
+        .toast.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Color themes */
+        .toast.info {
+            background: #1b253a;
+            color: #ffffff;
+        }
+
+        .toast.success {
+            background: #16a34a;
+            color: #ffffff;
+        }
+
+        .toast.error {
+            background: #dc2626;
+            color: #ffffff;
+        }
+    </style>
 
 </head>
 
@@ -24,14 +70,36 @@
             <div class="actions">
                 <div class="auth-row">
                     <button class="toggle-theme icon-btn" id="themeToggle" title="Toggle theme">🌗</button>
-                    <button class="icon-btn" id="openLogin">Login</button>
+                    <!-- Login button (shown when logged out) -->
+                    <button class="icon-btn" id="openLogin" style="display:none">Login</button>
+                    <!-- User profile button (shown when logged in) -->
+                    <div class="user-profile" id="userProfile" style="display:none">
+                        <button class="icon-btn profile-btn" id="profileBtn">
+                            <span class="user-avatar" id="userAvatar">U</span>
+                            <span class="user-name" id="userName">User</span>
+                        </button>
+                        <div class="profile-dropdown" id="profileDropdown">
+                            <div class="profile-header">
+                                <div class="user-avatar-large" id="userAvatarLarge">U</div>
+                                <div>
+                                    <div class="profile-name" id="profileName">User</div>
+                                    <div class="profile-email" id="profileEmail">user@example.com</div>
+                                </div>
+                            </div>
+                            <div class="divider"></div>
+                            <a href="#" class="dropdown-item" id="viewProfileBtn">👤 View Profile</a>
+                            <a href="#" class="dropdown-item" id="viewOrdersBtn">📦 Order History</a>
+                            <div class="divider"></div>
+                            <a href="#" class="dropdown-item logout" id="logoutBtn">🚪 Logout</a>
+                        </div>
+                    </div>
                 </div>
 
                 <nav class="desktop" id="navDesktop">
                     <a href="#home">Home</a>
                     <a href="#products">Products</a>
                     <a href="#offers">Offers</a>
-                    <a href="#contact">Contact</a>
+                    <a href="#" onclick="showToast('info'); return false;">Contact</a>
                 </nav>
 
                 <button class="hamburger" id="hambtn" aria-label="menu">
@@ -78,7 +146,9 @@
             </div>
 
             <div class="hero-right">
-                <img id="heroImage" src="https://media.istockphoto.com/id/1314210006/photo/grocery-store-shop-in-vintage-style-with-fruit-and-vegetables-crates-on-the-street.jpg?s=612x612&w=0&k=20&c=UFL3bRQkWH7dt6EMLswvM4u8-1sPQU9T5IFHXuBbClU=" alt="hero" />
+                <img id="heroImage"
+                    src="https://media.istockphoto.com/id/1314210006/photo/grocery-store-shop-in-vintage-style-with-fruit-and-vegetables-crates-on-the-street.jpg?s=612x612&w=0&k=20&c=UFL3bRQkWH7dt6EMLswvM4u8-1sPQU9T5IFHXuBbClU="
+                    alt="hero" />
             </div>
         </section>
 
@@ -107,7 +177,7 @@
                 <div style="font-weight:800;font-size:18px">₹<span id="cartTotal">0</span></div>
             </div>
             <div style="display:flex;flex-direction:column;gap:8px">
-                <button id="checkoutBtn" class="btn icon-btn"
+                <button id="checkoutBtn" type="button" class="btn icon-btn"
                     style="background:var(--primary);color:white;border-radius:10px;padding:10px 14px">Checkout</button>
                 <button id="closeCartBtn" class="icon-btn">Close</button>
             </div>
@@ -159,26 +229,70 @@
     <footer class="footer">
         <div class="footer-container">
 
-            <!-- Column 1 -->
+            <!-- Profile Modal -->
+            <div class="modal" id="profileModal" role="dialog" aria-hidden="true">
+                <div class="modal-card">
+                    <div class="modal-hdr">
+                        <h2>👤 My Profile</h2>
+                        <button class="icon-btn" id="profileModalClose" aria-label="close">✕</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="profile-info">
+                            <div class="profile-avatar-xl" id="profileAvatarXl">U</div>
+                            <div class="profile-details">
+                                <div class="profile-field">
+                                    <label>Name</label>
+                                    <div class="field-value" id="profileDisplayName">User</div>
+                                </div>
+                                <div class="profile-field">
+                                    <label>Email</label>
+                                    <div class="field-value" id="profileDisplayEmail">user@example.com</div>
+                                </div>
+                                <div class="profile-field">
+                                    <label>Member Since</label>
+                                    <div class="field-value" id="profileJoinDate">January 2026</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn-outline" id="profileModalCancel">Close</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order History Modal -->
+            <div class="modal" id="ordersModal" role="dialog" aria-hidden="true">
+                <div class="modal-card">
+                    <div class="modal-hdr">
+                        <h2>📦 Order History</h2>
+                        <button class="icon-btn" id="ordersModalClose" aria-label="close">✕</button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="ordersContainer">
+                            <!-- Orders will be dynamically inserted here -->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn-outline" id="ordersModalCancel">Close</button>
+                    </div>
+                </div>
+            </div>
             <div class="footer-col">
                 <h4>FreshBasket</h4>
                 <p class="muted">
                     Your trusted partner for fresh groceries delivered fast, safe, and hassle-free.
                 </p>
             </div>
-
-            <!-- Column 2 -->
             <div class="footer-col">
                 <h4>Quick Links</h4>
                 <ul>
                     <li><a href="#home">Home</a></li>
                     <li><a href="#products">Products</a></li>
                     <li><a href="#offers">Offers</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#" onclick="showToast('info'); return false;">Contact</a></li>
                 </ul>
             </div>
-
-            <!-- Column 3 -->
             <div class="footer-col">
                 <h4>Customer Support</h4>
                 <ul>
@@ -188,8 +302,6 @@
                     <li><a href="#">Terms & Conditions</a></li>
                 </ul>
             </div>
-
-            <!-- Column 4 -->
             <div class="footer-col">
                 <h4>Stay Updated</h4>
                 <input type="email" placeholder="Enter your email" class="newsletter-input" />
@@ -209,7 +321,6 @@
             © 2025 FreshBasket — All Rights Reserved.
         </div>
     </footer>
-
 
 
     <script>
@@ -235,7 +346,8 @@
             cart: JSON.parse(localStorage.getItem('fb_cart') || '{}'),
             filter: 'All',
             theme: localStorage.getItem('fb_theme') || 'light',
-            search: ''
+            search: '',
+            auth: JSON.parse(localStorage.getItem('fb_auth') || '{"isLoggedIn":false,"user":null}')
         };
 
         // ---------------------------
@@ -268,6 +380,24 @@
         const hambtn = document.getElementById('hambtn');
         const carouselTrack = document.getElementById('carouselTrack');
         const carouselDots = document.getElementById('carouselDots');
+        const userProfile = document.getElementById('userProfile');
+        const profileBtn = document.getElementById('profileBtn');
+        const profileDropdown = document.getElementById('profileDropdown');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const viewProfileBtn = document.getElementById('viewProfileBtn');
+        const viewOrdersBtn = document.getElementById('viewOrdersBtn');
+        const profileModal = document.getElementById('profileModal');
+        const ordersModal = document.getElementById('ordersModal');
+        const profileModalClose = document.getElementById('profileModalClose');
+        const profileModalCancel = document.getElementById('profileModalCancel');
+        const ordersModalClose = document.getElementById('ordersModalClose');
+        const ordersModalCancel = document.getElementById('ordersModalCancel');
+        const profileAvatarXl = document.getElementById('profileAvatarXl');
+        const profileDisplayName = document.getElementById('profileDisplayName');
+        const profileDisplayEmail = document.getElementById('profileDisplayEmail');
+        const profileJoinDate = document.getElementById('profileJoinDate');
+        const ordersContainer = document.getElementById('ordersContainer');
+
 
         // ---------------------------
         // Util helpers
@@ -277,6 +407,7 @@
 
         function saveCart() { localStorage.setItem('fb_cart', JSON.stringify(state.cart)); }
         function saveTheme() { localStorage.setItem('fb_theme', state.theme) }
+        function saveAuth() { localStorage.setItem('fb_auth', JSON.stringify(state.auth)); }
 
         function formatPrice(n) { return Number(n).toFixed(0) }
 
@@ -301,8 +432,6 @@
         hambtn.addEventListener('click', () => {
             navDesktop.classList.toggle('active');
         });
-
-        // close nav when clicking a link (mobile)
         $all('nav a').forEach(a => a.addEventListener('click', () => navDesktop.classList.remove('active')));
 
         // ---------------------------
@@ -341,9 +470,7 @@
         // Render products
         // ---------------------------
         function renderProducts() {
-            // small delay to simulate loading
             productGrid.innerHTML = '';
-            // filtered set
             const q = (state.search || '').toLowerCase();
             const list = state.products.filter(p => {
                 if (state.filter !== 'All' && p.category !== state.filter) return false;
@@ -370,8 +497,6 @@
       `;
                 productGrid.appendChild(card);
             });
-
-            // attach handlers
             $all('.card .add').forEach(btn => btn.addEventListener('click', onAddClick));
             $all('.card .quick').forEach(btn => btn.addEventListener('click', onQuick));
             skeletonWrap.innerHTML = ''; // remove skeletons
@@ -395,7 +520,6 @@
                     suggestionsEl.appendChild(it);
                 });
                 suggestionsEl.style.display = matches.length ? 'block' : 'none';
-                // live update products
                 renderProducts();
             });
 
@@ -410,7 +534,6 @@
         function showToast(text, ms = 2500) {
             const t = document.createElement('div'); t.className = 'toast';
             t.textContent = text; toastWrap.appendChild(t);
-            // show
             requestAnimationFrame(() => t.classList.add('show'));
             setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, ms);
         }
@@ -419,6 +542,36 @@
         // CART logic + UI
         // ---------------------------
         function getCartCount() { return Object.values(state.cart).reduce((s, v) => s + v, 0); }
+        function calcTotal() {
+            const items = Object.keys(state.cart).map(k => {
+                const p = state.products.find(x => x.id == k);
+                if (!p) return 0;
+                return p.price * state.cart[k];
+            });
+            return items.reduce((a, b) => a + b, 0);
+        }
+
+        function saveOrder() {
+            const orders = JSON.parse(localStorage.getItem('fb_orders') || '[]');
+            const cartItems = Object.keys(state.cart).map(k => {
+                const p = state.products.find(x => x.id == k);
+                return {
+                    name: p.name,
+                    qty: state.cart[k],
+                    price: p.price
+                };
+            });
+
+            const newOrder = {
+                id: Date.now(),
+                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                items: cartItems,
+                total: calcTotal()
+            };
+
+            orders.push(newOrder);
+            localStorage.setItem('fb_orders', JSON.stringify(orders));
+        }
         function getCartTotal() {
             return Object.keys(state.cart).reduce((s, id) => {
                 const p = PRODUCTS.find(x => x.id == id); if (!p) return s; return s + p.price * state.cart[id];
@@ -459,8 +612,6 @@
 
             cartTotal.textContent = formatPrice(getCartTotal());
             cartCountBadge.textContent = getCartCount();
-
-            // handlers
             $all('.cart-item .inc').forEach(b => b.addEventListener('click', e => {
                 const id = Number(e.currentTarget.dataset.id); changeQty(id, 1);
             }));
@@ -488,11 +639,8 @@
         function onAddClick(e) {
             const id = Number(e.currentTarget.dataset.id);
             const product = PRODUCTS.find(p => p.id === id);
-            // increment cart
             state.cart[id] = (state.cart[id] || 0) + 1; saveCart(); renderCart();
             showToast(`${product.name} added to cart`);
-
-            // flying image
             const cardImg = e.currentTarget.closest('.card').querySelector('img');
             if (cardImg) {
                 const fly = cardImg.cloneNode(true);
@@ -551,8 +699,185 @@
             closeCart();
             quickModal.classList.remove('open'); quickModal.setAttribute('aria-hidden', 'true');
             authModal.classList.remove('open'); authModal.setAttribute('aria-hidden', 'true');
+            profileModal.classList.remove('open'); profileModal.setAttribute('aria-hidden', 'true');
+            ordersModal.classList.remove('open'); ordersModal.setAttribute('aria-hidden', 'true');
             overlay.classList.remove('show');
         });
+
+        // ---------------------------
+        // Login modal
+        // ---------------------------
+        // ---------------------------
+        // AUTH SYSTEM
+        // ---------------------------
+        function renderAuthUI() {
+            if (state.auth.isLoggedIn && state.auth.user) {
+                // Show user profile, hide login button
+                openLogin.style.display = 'none';
+                userProfile.style.display = 'block';
+
+                // Update user info
+                const initial = state.auth.user.email[0].toUpperCase();
+                document.getElementById('userAvatar').textContent = initial;
+                document.getElementById('userAvatarLarge').textContent = initial;
+                document.getElementById('userName').textContent = state.auth.user.name || state.auth.user.email.split('@')[0];
+                document.getElementById('profileName').textContent = state.auth.user.name || state.auth.user.email.split('@')[0];
+                document.getElementById('profileEmail').textContent = state.auth.user.email;
+
+                // Update profile modal fields
+                profileAvatarXl.textContent = initial;
+                profileDisplayName.textContent = state.auth.user.name || state.auth.user.email.split('@')[0];
+                profileDisplayEmail.textContent = state.auth.user.email;
+                profileJoinDate.textContent = state.auth.user.joinDate || 'January 2026'; // Default or actual join date
+            } else {
+                // Show login button, hide profile
+                openLogin.style.display = 'inline-flex';
+                userProfile.style.display = 'none';
+            }
+        }
+
+        function loginUser(email, password) {
+            // Simple email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email || !emailRegex.test(email)) {
+                showToast('Please enter a valid email address');
+                return false;
+            }
+            if (!password || password.length < 3) {
+                showToast('Password must be at least 3 characters');
+                return false;
+            }
+
+            // Set auth state
+            state.auth = {
+                isLoggedIn: true,
+                user: {
+                    email: email,
+                    name: email.split('@')[0],
+                    joinDate: new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+                }
+            };
+            saveAuth();
+            renderAuthUI();
+            showToast(`Welcome, ${state.auth.user.name}! 🎉`);
+            return true;
+        }
+
+        function logoutUser() {
+            state.auth = { isLoggedIn: false, user: null };
+            saveAuth();
+            renderAuthUI();
+            showToast('Logged out successfully');
+            // Close dropdown if open
+            profileDropdown.classList.remove('show');
+        }
+
+        // Profile dropdown toggle
+        profileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('show');
+        });
+
+        // Logout button
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            logoutUser();
+        });
+
+        // View Profile button
+        viewProfileBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            profileDropdown.classList.remove('show');
+            openProfileModal();
+        });
+
+        // View Orders button
+        viewOrdersBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            profileDropdown.classList.remove('show');
+            openOrdersModal();
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!userProfile.contains(e.target)) {
+                profileDropdown.classList.remove('show');
+            }
+        });
+
+        // ---------------------------
+        // Profile Modal
+        // ---------------------------
+        function openProfileModal() {
+            if (!state.auth.isLoggedIn) {
+                showToast('Please log in to view your profile.');
+                return;
+            }
+            renderAuthUI(); // Ensure profile data is up-to-date
+            profileModal.classList.add('open');
+            profileModal.removeAttribute('aria-hidden');
+            overlay.classList.add('show');
+        }
+
+        function closeProfileModal() {
+            profileModal.classList.remove('open');
+            profileModal.setAttribute('aria-hidden', 'true');
+            overlay.classList.remove('show');
+        }
+
+        profileModalClose.addEventListener('click', closeProfileModal);
+        profileModalCancel.addEventListener('click', closeProfileModal);
+
+        // ---------------------------
+        // Order History Modal
+        // ---------------------------
+        function renderOrders() {
+            ordersContainer.innerHTML = '';
+            const orders = JSON.parse(localStorage.getItem('fb_orders') || '[]');
+
+            if (!orders.length) {
+                ordersContainer.innerHTML = '<div class="muted" style="text-align:center; padding:20px;">No orders yet.</div>';
+                return;
+            }
+
+            orders.reverse().forEach(order => { // Show most recent first
+                const orderDiv = document.createElement('div');
+                orderDiv.className = 'order-item';
+                orderDiv.innerHTML = `
+                    <div class="order-header">
+                        <span>Order ID: #${order.id}</span>
+                        <span>Date: ${order.date}</span>
+                    </div>
+                    <ul class="order-details">
+                        ${order.items.map(item => `<li>${item.name} × ${item.qty} (₹${item.price})</li>`).join('')}
+                    </ul>
+                    <div class="order-footer">
+                        <span>Total: ₹${formatPrice(order.total)}</span>
+                    </div>
+                `;
+                ordersContainer.appendChild(orderDiv);
+            });
+        }
+
+        function openOrdersModal() {
+            if (!state.auth.isLoggedIn) {
+                showToast('Please log in to view your order history.');
+                return;
+            }
+            renderOrders();
+            ordersModal.classList.add('open');
+            ordersModal.removeAttribute('aria-hidden');
+            overlay.classList.add('show');
+        }
+
+        function closeOrdersModal() {
+            ordersModal.classList.remove('open');
+            ordersModal.setAttribute('aria-hidden', 'true');
+            overlay.classList.remove('show');
+        }
+
+        ordersModalClose.addEventListener('click', closeOrdersModal);
+        ordersModalCancel.addEventListener('click', closeOrdersModal);
 
         // ---------------------------
         // Login modal
@@ -564,8 +889,15 @@
         authClose.addEventListener('click', () => { authModal.classList.remove('open'); authModal.setAttribute('aria-hidden', 'true'); overlay.classList.remove('show') });
         document.getElementById('authCancel').addEventListener('click', () => { authModal.classList.remove('open'); authModal.setAttribute('aria-hidden', 'true'); overlay.classList.remove('show') });
         document.getElementById('authSubmit').addEventListener('click', () => {
-            showToast('Logged in (demo)');
-            authModal.classList.remove('open'); authModal.setAttribute('aria-hidden', 'true'); overlay.classList.remove('show')
+            const email = document.getElementById('authEmail').value.trim();
+            const password = document.getElementById('authPass').value;
+
+            if (loginUser(email, password)) {
+                authModal.classList.remove('open'); authModal.setAttribute('aria-hidden', 'true'); overlay.classList.remove('show');
+                // Clear form
+                document.getElementById('authEmail').value = '';
+                document.getElementById('authPass').value = '';
+            }
         });
 
         // ---------------------------
@@ -642,6 +974,8 @@
                 updateCartBadge();
             }, 600);
             setupSearch();
+            // Init auth UI
+            renderAuthUI();
             // attach other handlers
             document.getElementById('searchBtn').addEventListener('click', () => {
                 state.search = searchInput.value.trim();
@@ -650,13 +984,6 @@
             });
 
             // add-to-cart button in quick modal is wired above
-
-            // checkout button demo: just clears cart for demo
-            document.getElementById('checkoutBtn').addEventListener('click', () => {
-                if (!Object.keys(state.cart).length) { showToast('Your cart is empty'); return }
-                showToast('Checkout complete (demo), order placed');
-                state.cart = {}; saveCart(); renderCart(); closeCart();
-            });
 
             // close quick modal on overlay / escape
             document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { quickModal.classList.remove('open'); authModal.classList.remove('open'); overlay.classList.remove('show'); closeCart(); } });
@@ -703,9 +1030,64 @@
         init();
         attachGlobalAddHandlers();
 
-        // Ensure changes to cart update badge
-        const originalSaveCart = saveCart;
-        saveCart = function () { originalSaveCart(); renderCart(); updateCartBadge(); };
+
+        window.addEventListener('load', () => {
+
+            const billModal = document.getElementById('billModal');
+            const billContent = document.getElementById('billContent');
+            const billTotalEl = document.getElementById('billTotal');
+            const billClose = document.getElementById('billClose');
+            const printBillBtn = document.getElementById('printBillBtn');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+
+            function generateBill() {
+                billContent.innerHTML = '';
+                let total = 0;
+                Object.keys(state.cart).forEach(id => {
+                    const p = PRODUCTS.find(x => x.id == id);
+                    const qty = state.cart[id];
+                    const line = p.price * qty;
+                    total += line;
+                    billContent.innerHTML += `<div class="bill-item"><span>${p.name} × ${qty}</span><span>₹${line}</span></div>`;
+                });
+                billTotalEl.textContent = total;
+            }
+
+
+            checkoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+
+                if (!Object.keys(state.cart).length) {
+                    showToast('Your cart is empty');
+                    return;
+                }
+
+                generateBill();
+                billModal.classList.add('open');
+                overlay.classList.add('show');
+                closeCart();
+            }, true);
+
+
+            billClose.addEventListener('click', () => {
+                saveOrder(); // Save the order to history
+                showToast('Order placed! 🎉');
+                billModal.classList.remove('open');
+                overlay.classList.remove('show');
+                state.cart = {};
+                saveCart();
+                renderCart();
+                updateCartBadge();
+            });
+
+            printBillBtn.addEventListener('click', () => window.print());
+
+        });
+
+
+        // Ensure changes to cart update badge (already handled in individual functions)
 
         // wire up quick modal close by clicking outside (use overlay)
         // overlay click already closes modals
@@ -750,10 +1132,7 @@
         observerModal.observe(quickModal, { attributes: true });
         observerModal.observe(authModal, { attributes: true });
 
-        // small: clicking quickAdd shows small confirmation
-        quickAdd.addEventListener('click', () => {
-            if (quickProductId) { addToCartById(quickProductId); overlay.classList.remove('show'); }
-        });
+        // quickAdd handler already defined above (line 576)
 
         // ensure overlay hide when nothing open
         setInterval(() => {
@@ -761,6 +1140,56 @@
         }, 500);
 
     </script>
+
+    <!-- Toast for contact info -->
+    <div id="contactToast" class="toast info" style="display:none;">
+        Contact Us: ✉️ support@freshmart.com | 📞 +91 9699828099
+    </div>
+
+    <script>
+        // Show contact info toast when clicking Contact link
+        const contactToast = document.getElementById("contactToast");
+
+        function showContactToast() {
+            contactToast.style.display = 'block';
+            contactToast.classList.add('show');
+
+            setTimeout(() => {
+                document.addEventListener("click", closeContactToast);
+            }, 50);
+        }
+
+        function closeContactToast() {
+            contactToast.classList.remove("show");
+            setTimeout(() => { contactToast.style.display = 'none'; }, 300);
+            document.removeEventListener("click", closeContactToast);
+        }
+
+        // Update Contact links to use new function
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('a[href="#"]').forEach(link => {
+                if (link.getAttribute('onclick')?.includes('showToast')) {
+                    link.onclick = (e) => { e.preventDefault(); showContactToast(); return false; };
+                }
+            });
+        });
+    </script>
+
+    <div class="modal" id="billModal">
+        <div class="modal-card bill-card">
+            <button id="billClose" class="icon-btn" style="float:right">✕</button>
+            <h3>Order Bill</h3>
+            <div id="billContent"></div>
+            <div style="margin-top:12px;text-align:right;font-weight:800">
+                Total: ₹<span id="billTotal"></span>
+            </div>
+            <button id="printBillBtn" class="icon-btn"
+                style="margin-top:12px;background:var(--primary);color:#fff;border-radius:8px;padding:10px 14px">
+                Print Bill
+            </button>
+        </div>
+    </div>
+
 </body>
 
 </html>
