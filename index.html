@@ -2,1075 +2,1688 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <title>FreshBasket</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="color-scheme" content="light dark">
-    <link rel="stylesheet" href="style1.css" />
-    <link rel="icon" type="image/png" href="image.png">
+  <meta charset="utf-8" />
+  <title>FreshBasket</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="stylesheet" href="style1.css" />
+  <link rel="icon" type="image/png" href="image.png" />
 
-    <style>
-        /* Contact toast override - top-center only for #contactToast */
-        #contactToast {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-20px);
-            padding: 14px 22px;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 500;
-            background: #1b253a;
-            color: #fff;
-            box-shadow: 0 15px 15px rgba(0, 0, 0, .15);
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.35s ease;
-            z-index: 9999;
-        }
+  <style>
+    /* Contact toast override - top-center only for #contactToast */
+    #contactToast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      padding: 14px 22px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      background: #1b253a;
+      color: #fff;
+      box-shadow: 0 15px 15px rgba(0, 0, 0, 0.15);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.35s ease;
+      z-index: 9999;
+    }
 
-        #contactToast.show {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateX(-50%) translateY(0);
-        }
-    </style>
-
+    #contactToast.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
 </head>
 
 <body data-theme="light">
-    <div class="wrap">
-        <!-- HEADER -->
-        <header>
-            <a href="#home" style="text-decoration: none">
-                <div class="brand">
-                    <div class="logo">FB</div>
-                    FreshBasket
+  <div class="wrap">
+    <!-- HEADER -->
+    <header>
+      <a href="#home" style="text-decoration: none">
+        <div class="brand">
+          <div class="logo">FB</div>
+          FreshBasket
+        </div>
+      </a>
+
+      <div class="actions">
+        <div class="auth-row">
+          <button class="toggle-theme icon-btn" id="themeToggle" title="Toggle theme">
+            Mode
+          </button>
+          <!-- Login button (shown when logged out) -->
+          <button class="icon-btn" id="openLogin" style="display: none">
+            Login
+          </button>
+          <!-- User profile button (shown when logged in) -->
+          <div class="user-profile" id="userProfile" style="display: none">
+            <button class="icon-btn profile-btn" id="profileBtn">
+              <span class="user-avatar" id="userAvatar">U</span>
+              <span class="user-name" id="userName">User</span>
+            </button>
+            <div class="profile-dropdown" id="profileDropdown">
+              <div class="profile-header">
+                <div class="user-avatar-large" id="userAvatarLarge">U</div>
+                <div>
+                  <div class="profile-name" id="profileName">User</div>
+                  <div class="profile-email" id="profileEmail">
+                    user@example.com
+                  </div>
                 </div>
-            </a>
-
-            <div class="actions">
-                <div class="auth-row">
-                    <button class="toggle-theme icon-btn" id="themeToggle" title="Toggle theme">Mode</button>
-                    <!-- Login button (shown when logged out) -->
-                    <button class="icon-btn" id="openLogin" style="display:none">Login</button>
-                    <!-- User profile button (shown when logged in) -->
-                    <div class="user-profile" id="userProfile" style="display:none">
-                        <button class="icon-btn profile-btn" id="profileBtn">
-                            <span class="user-avatar" id="userAvatar">U</span>
-                            <span class="user-name" id="userName">User</span>
-                        </button>
-                        <div class="profile-dropdown" id="profileDropdown">
-                            <div class="profile-header">
-                                <div class="user-avatar-large" id="userAvatarLarge">U</div>
-                                <div>
-                                    <div class="profile-name" id="profileName">User</div>
-                                    <div class="profile-email" id="profileEmail">user@example.com</div>
-                                </div>
-                            </div>
-                            <div class="divider"></div>
-                            <a href="#" class="dropdown-item" id="viewProfileBtn">Profile</a>
-                            <a href="#" class="dropdown-item" id="viewOrdersBtn">Orders</a>
-                            <div class="divider"></div>
-                            <a href="#" class="dropdown-item logout" id="logoutBtn">Logout</a>
-                        </div>
-                    </div>
-                </div>
-
-                <nav class="desktop" id="navDesktop">
-                    <a href="#home">Home</a>
-                    <a href="#products">Products</a>
-                    <a href="#offers">Offers</a>
-                    <a href="#" onclick="showToast('info'); return false;">Contact</a>
-                </nav>
-
-                <button class="hamburger" id="hambtn" aria-label="menu">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </button>
-
-                <button class="icon-btn" id="openWishlistBtn" aria-label="open wishlist" title="Wishlist">Wish <span
-                        id="wishCountBadge" class="cart-badge"
-                        style="margin-left:4px;display:inline-block;background:#e53e3e">0</span></button>
-                <button class="icon-btn" id="openCartBtn" aria-label="open cart">
-                    Cart <span id="cartCountBadge" class="cart-badge"
-                        style="margin-left:8px; display:inline-block;">0</span>
-                </button>
+              </div>
+              <div class="divider"></div>
+              <a href="#" class="dropdown-item" id="viewProfileBtn">Profile</a>
+              <a href="#" class="dropdown-item" id="viewOrdersBtn">Orders</a>
+              <div class="divider"></div>
+              <a href="#" class="dropdown-item logout" id="logoutBtn">Logout</a>
             </div>
-        </header>
+          </div>
+        </div>
 
-        <!-- HERO + Carousel -->
-        <section class="hero">
-            <div class="hero-left">
-                <h1>Fresh groceries delivered to your door</h1>
-                <p class="muted">Locally sourced fruits, vegetables, dairy & pantry essentials - fast delivery.</p>
+        <nav class="desktop" id="navDesktop">
+          <a href="#home">Home</a>
+          <a href="#products">Products</a>
+          <a href="#offers">Offers</a>
+          <a href="#" onclick="
+                showToast(
+                  'Email: support@freshbasket.com | Tel: +91 9699828099',
+                );
+                return false;
+              ">Contact</a>
+        </nav>
 
-                <div class="searchbar" style="margin-top:14px; align-items:center;">
-                    <div style="flex:1;position:relative" class="search-suggestions">
-                        <input id="searchInput" type="search" placeholder="Search for fruits, vegetables..."
-                            autocomplete="off" />
-                        <div id="suggestions" class="suggestions"></div>
-                    </div>
-                    <button id="searchBtn" class="icon-btn"
-                        style="background:var(--primary);color:white;border-radius:10px">Search</button>
-                </div>
+        <button class="hamburger" id="hambtn" aria-label="menu">
+          <div></div>
+          <div></div>
+          <div></div>
+        </button>
 
-                <!-- category chips -->
-                <div class="catbar" id="categoryBar" style="margin-top:18px"></div>
+        <button class="icon-btn" id="openWishlistBtn" aria-label="open wishlist" title="Wishlist">
+          Wish
+          <span id="wishCountBadge" class="cart-badge" style="
+                margin-left: 4px;
+                display: inline-block;
+                background: #e53e3e;
+              ">0</span>
+        </button>
+        <button class="icon-btn" id="openCartBtn" aria-label="open cart">
+          Cart
+          <span id="cartCountBadge" class="cart-badge" style="margin-left: 8px; display: inline-block">0</span>
+        </button>
+      </div>
+    </header>
 
-                <!-- carousel offers -->
-                <div id="offers" style="margin-top:16px">
-                    <div class="carousel" id="carousel">
-                        <div class="carousel-track" id="carouselTrack">
-                            <!-- slides inserted by JS -->
-                        </div>
-                    </div>
-                    <div class="dots" id="carouselDots"></div>
-                </div>
+    <!-- HERO + Carousel -->
+    <section class="hero">
+      <div class="hero-left">
+        <h1>Fresh groceries delivered to your door</h1>
+        <p class="muted">
+          Locally sourced fruits, vegetables, dairy & pantry essentials - fast
+          delivery.
+        </p>
+
+        <div class="searchbar" style="margin-top: 14px; align-items: center">
+          <div style="flex: 1; position: relative" class="search-suggestions">
+            <input id="searchInput" type="search" placeholder="Search for fruits, vegetables..." autocomplete="off" />
+            <div id="suggestions" class="suggestions"></div>
+          </div>
+          <button id="searchBtn" class="icon-btn" style="
+                background: var(--primary);
+                color: white;
+                border-radius: 10px;
+              ">
+            Search
+          </button>
+        </div>
+
+        <!-- category chips -->
+        <div class="catbar" id="categoryBar" style="margin-top: 18px"></div>
+
+        <!-- carousel offers -->
+        <div id="offers" style="margin-top: 16px">
+          <div class="carousel" id="carousel">
+            <div class="carousel-track" id="carouselTrack">
+              <!-- slides inserted by JS -->
             </div>
+          </div>
+          <div class="dots" id="carouselDots"></div>
+        </div>
+      </div>
 
-            <div class="hero-right">
-                <img id="heroImage"
-                    src="https://media.istockphoto.com/id/1314210006/photo/grocery-store-shop-in-vintage-style-with-fruit-and-vegetables-crates-on-the-street.jpg?s=612x612&w=0&k=20&c=UFL3bRQkWH7dt6EMLswvM4u8-1sPQU9T5IFHXuBbClU="
-                    alt="hero" />
-            </div>
-        </section>
+      <div class="hero-right">
+        <img id="heroImage"
+          src="https://media.istockphoto.com/id/1314210006/photo/grocery-store-shop-in-vintage-style-with-fruit-and-vegetables-crates-on-the-street.jpg?s=612x612&w=0&k=20&c=UFL3bRQkWH7dt6EMLswvM4u8-1sPQU9T5IFHXuBbClU="
+          alt="hero" />
+      </div>
+    </section>
 
-        <!-- PRODUCTS GRID -->
-        <main>
-            <h3 id="products">Popular picks</h3>
-            <div class="divider"></div>
-            <div class="toolbar">
-                <span class="result-count" id="resultCount">Loading products...</span>
-                <select class="sort-select" id="sortSelect">
-                    <option value="default">Sort: Default</option>
-                    <option value="price-asc">Price: Low to High</option>
-                    <option value="price-desc">Price: High to Low</option>
-                    <option value="rating">Top Rated</option>
-                    <option value="name">Name A-Z</option>
-                </select>
-            </div>
-            <!-- loader skeleton -->
-            <div id="skeletonWrap" class="grid" style="margin-bottom:16px">
-                <!-- skeleton cards -->
-            </div>
-            <div id="productGrid" class="grid" aria-live="polite"></div>
-        </main>
+    <!-- PRODUCTS GRID -->
+    <main>
+      <h3 id="products">Popular picks</h3>
+      <div class="divider"></div>
+      <div class="toolbar">
+        <span class="result-count" id="resultCount">Loading products...</span>
+        <select class="sort-select" id="sortSelect">
+          <option value="default">Sort: Default</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="rating">Top Rated</option>
+          <option value="name">Name A-Z</option>
+        </select>
+      </div>
+      <!-- loader skeleton -->
+      <div id="skeletonWrap" class="grid" style="margin-bottom: 16px">
+        <!-- skeleton cards -->
+      </div>
+      <div id="productGrid" class="grid" aria-live="polite"></div>
+    </main>
+  </div>
+
+  <!-- CART PANEL -->
+  <aside class="cart-panel" id="cartPanel" aria-hidden="true">
+    <h3>Your cart</h3>
+    <div id="cartItemsWrap"></div>
+    <div class="coupon-row">
+      <input id="couponInput" placeholder="Coupon: FRESH10 or SAVE20" autocomplete="off" />
+      <button id="applyCouponBtn">Apply</button>
     </div>
-
-    <!-- CART PANEL -->
-    <aside class="cart-panel" id="cartPanel" aria-hidden="true">
-        <h3>Your cart</h3>
-        <div id="cartItemsWrap"></div>
-        <div class="coupon-row">
-            <input id="couponInput" placeholder="Coupon: FRESH10 or SAVE20" autocomplete="off" />
-            <button id="applyCouponBtn">Apply</button>
-        </div>
-        <div id="discountLine" style="display:none" class="discount-line">
-            <span>Discount applied</span><span id="discountAmt">-Rs.0</span>
-        </div>
-        <div class="divider"></div>
-        <div style="display:flex;justify-content:space-between;align-items:center">
-            <div>
-                <div class="muted">Total</div>
-                <div style="font-weight:800;font-size:18px">Rs.<span id="cartTotal">0</span></div>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:8px">
-                <button id="checkoutBtn" type="button" class="btn icon-btn"
-                    style="background:var(--primary);color:white;border-radius:10px;padding:10px 14px">Checkout</button>
-                <button id="closeCartBtn" class="icon-btn">Close</button>
-            </div>
-        </div>
-    </aside>
-
-    <div class="overlay" id="overlay"></div>
-
-    <!-- WISHLIST PANEL -->
-    <aside class="wishlist-panel" id="wishlistPanel">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-            <h3 style="margin:0">Wishlist</h3>
-            <button class="icon-btn" id="closeWishlistBtn">×</button>
-        </div>
-        <div id="wishlistItemsWrap"></div>
-    </aside>
-
-    <!-- TOASTS -->
-    <div class="toastwrap" id="toastWrap"></div>
-
-    <!-- QUICK VIEW MODAL -->
-    <div class="modal" id="quickModal" aria-hidden="true">
-        <div class="modal-card" id="quickCard">
-            <button id="quickClose" class="icon-btn" style="float:right">×</button>
-            <img id="quickImg" src="" alt="product" />
-            <h3 id="quickTitle"></h3>
-            <div id="quickDesc" class="muted"></div>
-            <div style="display:flex;gap:10px;margin-top:12px">
-                <div style="font-weight:800;font-size:18px">Rs.<span id="quickPrice">0</span></div>
-                <button id="quickAdd" class="icon-btn"
-                    style="background:var(--primary);color:#fff;border-radius:10px">Add to cart</button>
-            </div>
-        </div>
+    <div id="discountLine" style="display: none" class="discount-line">
+      <span>Discount applied</span><span id="discountAmt">-Rs.0</span>
     </div>
+    <div class="divider"></div>
+    <div style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        ">
+      <div>
+        <div class="muted">Total</div>
+        <div style="font-weight: 800; font-size: 18px">
+          Rs.<span id="cartTotal">0</span>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <button id="checkoutBtn" type="button" class="btn icon-btn" style="
+              background: var(--primary);
+              color: white;
+              border-radius: 10px;
+              padding: 10px 14px;
+            ">
+          Checkout
+        </button>
+        <button id="closeCartBtn" class="icon-btn">Close</button>
+      </div>
+    </div>
+  </aside>
 
-    <!-- LOGIN / SIGNUP MODAL -->
-    <div class="modal" id="authModal" aria-hidden="true">
+  <div class="overlay" id="overlay"></div>
+
+  <!-- WISHLIST PANEL -->
+  <aside class="wishlist-panel" id="wishlistPanel">
+    <div style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 12px;
+        ">
+      <h3 style="margin: 0">Wishlist</h3>
+      <button class="icon-btn" id="closeWishlistBtn">×</button>
+    </div>
+    <div id="wishlistItemsWrap"></div>
+  </aside>
+
+  <!-- TOASTS -->
+  <div class="toastwrap" id="toastWrap"></div>
+
+  <!-- QUICK VIEW MODAL -->
+  <div class="modal" id="quickModal" aria-hidden="true">
+    <div class="modal-card" id="quickCard">
+      <button id="quickClose" class="icon-btn" style="float: right">×</button>
+      <img id="quickImg" src="" alt="product" />
+      <h3 id="quickTitle"></h3>
+      <div id="quickDesc" class="muted"></div>
+      <div style="display: flex; gap: 10px; margin-top: 12px">
+        <div style="font-weight: 800; font-size: 18px">
+          Rs.<span id="quickPrice">0</span>
+        </div>
+        <button id="quickAdd" class="icon-btn" style="background: var(--primary); color: #fff; border-radius: 10px">
+          Add to cart
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGIN / SIGNUP MODAL -->
+  <div class="modal" id="authModal" aria-hidden="true">
+    <div class="modal-card">
+      <button id="authClose" class="icon-btn" style="float: right; margin-bottom: 6px">
+        ×
+      </button>
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tabLogin">Login</button>
+        <button class="auth-tab" id="tabSignup">Sign Up</button>
+      </div>
+      <!-- Login form -->
+      <div id="authLoginForm">
+        <div class="addr-grid" style="margin-top: 8px">
+          <div class="form-field full">
+            <label>Email</label><input id="authEmail" type="email" placeholder="you@email.com" />
+          </div>
+          <div class="form-field full">
+            <label>Password</label><input id="authPass" type="password" placeholder="Password" />
+          </div>
+        </div>
+      </div>
+      <!-- Signup form -->
+      <div id="authSignupForm" style="display: none">
+        <div class="addr-grid" style="margin-top: 8px">
+          <div class="form-field full">
+            <label>Full Name</label><input id="authName" type="text" placeholder="Your full name" />
+          </div>
+          <div class="form-field full">
+            <label>Email</label><input id="authEmailSu" type="email" placeholder="you@email.com" />
+          </div>
+          <div class="form-field full">
+            <label>Password</label><input id="authPassSu" type="password" placeholder="Min. 3 characters" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions" style="margin-top: 14px">
+        <button class="btn-outline" id="authCancel">Cancel</button>
+        <button class="btn-primary" id="authSubmit">Login</button>
+      </div>
+      <div style="margin-top: 8px; text-align: center" class="muted">
+        Demo mode - localStorage only.
+      </div>
+    </div>
+  </div>
+
+  <!-- ADDRESS MODAL -->
+  <div class="modal" id="addressModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-hdr">
+        <h2>Box Delivery Address</h2>
+        <button class="icon-btn" id="addressModalClose">X</button>
+      </div>
+      <div class="step-bar">
+        <div class="step-item done" id="step1">1 Cart</div>
+        <div class="step-item active" id="step2">2 Address</div>
+        <div class="step-item" id="step3">3 Payment</div>
+        <div class="step-item" id="step4">4 Confirm</div>
+      </div>
+      <div class="addr-grid">
+        <div class="form-field">
+          <label>Full Name</label><input id="addrName" placeholder="John Doe" />
+        </div>
+        <div class="form-field">
+          <label>Phone</label><input id="addrPhone" placeholder="10-digit number" maxlength="10" />
+        </div>
+        <div class="form-field full">
+          <label>Street Address</label><input id="addrStreet" placeholder="Building, Street, Area" />
+        </div>
+        <div class="form-field">
+          <label>City</label><input id="addrCity" placeholder="City" />
+        </div>
+        <div class="form-field">
+          <label>State</label><input id="addrState" placeholder="State" />
+        </div>
+        <div class="form-field">
+          <label>PIN Code</label><input id="addrPin" placeholder="6-digit PIN" maxlength="6" />
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-outline" id="addressModalClose2">Cancel</button>
+        <button class="btn-primary" id="addrNextBtn">Next: Payment -></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAYMENT MODAL -->
+  <div class="modal" id="paymentModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-hdr">
+        <h2>Cash Payment</h2>
+        <button class="icon-btn" id="paymentModalClose">X</button>
+      </div>
+      <div class="step-bar">
+        <div class="step-item done">1 Cart</div>
+        <div class="step-item done">2 Address</div>
+        <div class="step-item active">3 Payment</div>
+        <div class="step-item">4 Confirm</div>
+      </div>
+      <div class="pay-options">
+        <div class="pay-card selected" data-method="cod">
+          <div class="pay-icon">💵</div>
+          <div class="pay-info">
+            <div class="pay-title">Cash on Delivery</div>
+            <div class="pay-sub">Pay when your order arrives</div>
+          </div>
+          <div class="pay-check">✓</div>
+        </div>
+        <div class="pay-card" data-method="upi">
+          <div class="pay-icon">📱</div>
+          <div class="pay-info">
+            <div class="pay-title">UPI / GPay / PhonePe</div>
+            <div class="pay-sub">Instant payment via UPI</div>
+          </div>
+          <div class="pay-check"></div>
+        </div>
+        <div class="pay-card" data-method="card">
+          <div class="pay-icon">💳</div>
+          <div class="pay-info">
+            <div class="pay-title">Credit / Debit Card</div>
+            <div class="pay-sub">Visa, Mastercard, RuPay</div>
+          </div>
+          <div class="pay-check"></div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-outline" id="paymentModalClose2">↑ Back</button>
+        <button class="btn-primary" id="placeOrderBtn">Place Order 🎉</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT MODAL -->
+  <div class="modal content-modal" id="contactModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-hdr">
+        <h2>Contact Us</h2>
+        <button class="icon-btn" id="contactModalClose">X</button>
+      </div>
+      <p class="muted">
+        We'd love to hear from you. Fill in the form below and we'll respond
+        within 24 hours.
+      </p>
+      <div class="contact-form">
+        <div class="form-field">
+          <label>Name</label><input id="ctName" placeholder="Your name" />
+        </div>
+        <div class="form-field">
+          <label>Email</label><input id="ctEmail" type="email" placeholder="you@email.com" />
+        </div>
+        <div class="form-field">
+          <label>Message</label><textarea id="ctMsg" placeholder="Type your message..."></textarea>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-outline" id="contactModalClose2">Cancel</button>
+        <button class="btn-primary" id="contactSendBtn">Send Message</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ MODAL -->
+  <div class="modal content-modal" id="faqModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-hdr">
+        <h2>â" FAQ</h2>
+        <button class="icon-btn" id="faqModalClose">×</button>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How fast is delivery?</div>
+        <div class="faq-a">
+          We deliver within 2-4 hours in most areas. Same-day delivery is
+          available for orders placed before 6 PM.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What are your delivery hours?</div>
+        <div class="faq-a">
+          We deliver 7 days a week from 8 AM to 9 PM. No delivery on public
+          holidays.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I cancel my order?</div>
+        <div class="faq-a">
+          Yes, orders can be cancelled within 30 minutes of placement by
+          contacting our support team.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Are the products fresh?</div>
+        <div class="faq-a">
+          All products are sourced daily from local farms and certified
+          vendors to ensure maximum freshness.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What payment methods do you accept?</div>
+        <div class="faq-a">
+          We accept Cash on Delivery, UPI (GPay, PhonePe, Paytm), and Credit /
+          Debit cards.
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-primary" id="faqModalClose2">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHIPPING MODAL -->
+  <div class="modal content-modal" id="shippingModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-hdr">
+        <h2>🚚 Shipping Info</h2>
+        <button class="icon-btn" id="shippingModalClose">×</button>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Standard Delivery (Free)</div>
+        <div class="faq-a">
+          Orders above Rs.299 qualify for free delivery. Delivered in 2-4
+          hours.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Express Delivery (Rs.29)</div>
+        <div class="faq-a">
+          Get your order in 60 minutes. Available in select city zones.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Delivery Zones</div>
+        <div class="faq-a">
+          We currently serve Mumbai, Pune, Bengaluru, Hyderabad, Chennai, and
+          Delhi NCR. More cities coming soon!
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Tracking Your Order</div>
+        <div class="faq-a">
+          Once your order is shipped, you'll receive a tracking update in your
+          Order History section.
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-primary" id="shippingModalClose2">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REFUND MODAL -->
+  <div class="modal content-modal" id="refundModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-hdr">
+        <h2>📄 Refund Policy</h2>
+        <button class="icon-btn" id="refundModalClose">×</button>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Eligibility</div>
+        <div class="faq-a">
+          Refunds are applicable for damaged, expired, or incorrect items
+          delivered to you.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How to Request</div>
+        <div class="faq-a">
+          Contact us within 24 hours of delivery with your Order ID and a
+          photo of the issue.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Refund Timeline</div>
+        <div class="faq-a">
+          Approved refunds are processed within 3-5 business days to your
+          original payment method.
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-primary" id="refundModalClose2">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- T&C MODAL -->
+  <div class="modal content-modal" id="tcModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-hdr">
+        <h2>📜 Terms &amp; Conditions</h2>
+        <button class="icon-btn" id="tcModalClose">×</button>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Use of Service</div>
+        <div class="faq-a">
+          FreshBasket services are intended for personal, non-commercial use
+          only.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Account</div>
+        <div class="faq-a">
+          You are responsible for maintaining the confidentiality of your
+          account and password.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Pricing</div>
+        <div class="faq-a">
+          All prices are in Indian Rupees (INR) and are subject to change
+          without prior notice.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Governing Law</div>
+        <div class="faq-a">
+          These terms are governed by the laws of India and disputes shall be
+          subject to the jurisdiction of Indian courts.
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-primary" id="tcModalClose2">Close</button>
+      </div>
+    </div>
+  </div>
+  <footer class="footer">
+    <div class="footer-container">
+      <!-- Profile Modal -->
+      <div class="modal" id="profileModal" role="dialog" aria-hidden="true">
         <div class="modal-card">
-            <button id="authClose" class="icon-btn" style="float:right;margin-bottom:6px">×</button>
-            <div class="auth-tabs">
-                <button class="auth-tab active" id="tabLogin">Login</button>
-                <button class="auth-tab" id="tabSignup">Sign Up</button>
-            </div>
-            <!-- Login form -->
-            <div id="authLoginForm">
-                <div class="addr-grid" style="margin-top:8px">
-                    <div class="form-field full"><label>Email</label><input id="authEmail" type="email"
-                            placeholder="you@email.com" /></div>
-                    <div class="form-field full"><label>Password</label><input id="authPass" type="password"
-                            placeholder="Password" /></div>
+          <div class="modal-hdr">
+            <h2>👤 My Profile</h2>
+            <button class="icon-btn" id="profileModalClose" aria-label="close">
+              ×
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="profile-info">
+              <div class="profile-avatar-xl" id="profileAvatarXl">U</div>
+              <div class="profile-details">
+                <div class="profile-field">
+                  <label>Name</label>
+                  <div class="field-value" id="profileDisplayName">User</div>
                 </div>
-            </div>
-            <!-- Signup form -->
-            <div id="authSignupForm" style="display:none">
-                <div class="addr-grid" style="margin-top:8px">
-                    <div class="form-field full"><label>Full Name</label><input id="authName" type="text"
-                            placeholder="Your full name" /></div>
-                    <div class="form-field full"><label>Email</label><input id="authEmailSu" type="email"
-                            placeholder="you@email.com" /></div>
-                    <div class="form-field full"><label>Password</label><input id="authPassSu" type="password"
-                            placeholder="Min. 3 characters" /></div>
+                <div class="profile-field">
+                  <label>Email</label>
+                  <div class="field-value" id="profileDisplayEmail">
+                    user@example.com
+                  </div>
                 </div>
+                <div class="profile-field">
+                  <label>Member Since</label>
+                  <div class="field-value" id="profileJoinDate">
+                    January 2026
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="modal-actions" style="margin-top:14px">
-                <button class="btn-outline" id="authCancel">Cancel</button>
-                <button class="btn-primary" id="authSubmit">Login</button>
-            </div>
-            <div style="margin-top:8px;text-align:center" class="muted">Demo mode - localStorage only.</div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-outline" id="profileModalCancel">Close</button>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <!-- ADDRESS MODAL -->
-    <div class="modal" id="addressModal" aria-hidden="true">
+      <!-- Order History Modal -->
+      <div class="modal" id="ordersModal" role="dialog" aria-hidden="true">
         <div class="modal-card">
-            <div class="modal-hdr">
-                <h2>Box Delivery Address</h2><button class="icon-btn" id="addressModalClose">X</button>
+          <div class="modal-hdr">
+            <h2>📦 Order History</h2>
+            <button class="icon-btn" id="ordersModalClose" aria-label="close">
+              ×
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="ordersContainer">
+              <!-- Orders will be dynamically inserted here -->
             </div>
-            <div class="step-bar">
-                <div class="step-item done" id="step1">1 Cart</div>
-                <div class="step-item active" id="step2">2 Address</div>
-                <div class="step-item" id="step3">3 Payment</div>
-                <div class="step-item" id="step4">4 Confirm</div>
-            </div>
-            <div class="addr-grid">
-                <div class="form-field"><label>Full Name</label><input id="addrName" placeholder="John Doe" /></div>
-                <div class="form-field"><label>Phone</label><input id="addrPhone" placeholder="10-digit number"
-                        maxlength="10" /></div>
-                <div class="form-field full"><label>Street Address</label><input id="addrStreet"
-                        placeholder="Building, Street, Area" /></div>
-                <div class="form-field"><label>City</label><input id="addrCity" placeholder="City" /></div>
-                <div class="form-field"><label>State</label><input id="addrState" placeholder="State" /></div>
-                <div class="form-field"><label>PIN Code</label><input id="addrPin" placeholder="6-digit PIN"
-                        maxlength="6" /></div>
-            </div>
-            <div class="modal-actions">
-                <button class="btn-outline" id="addressModalClose2">Cancel</button>
-                <button class="btn-primary" id="addrNextBtn">Next: Payment -></button>
-            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-outline" id="ordersModalCancel">Close</button>
+          </div>
         </div>
+      </div>
+      <div class="footer-col">
+        <h4>FreshBasket</h4>
+        <p class="muted">
+          Your trusted partner for fresh groceries delivered fast, safe, and
+          hassle-free.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#products">Products</a></li>
+          <li><a href="#offers">Offers</a></li>
+          <li><a href="#" id="footerContactLink">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Customer Support</h4>
+        <ul>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Shipping Info</a></li>
+          <li><a href="#" id="openRefundModal">Refund Policy</a></li>
+          <li><a href="#">Terms & Conditions</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Stay Updated</h4>
+        <input type="email" placeholder="Enter your email" class="newsletter-input" />
+        <button class="newsletter-btn">Subscribe</button>
+
+        <div class="social-icons">
+          <a href="#">🌐</a>
+          <a href="#">📞</a>
+          <a href="#">📸</a>
+          <a href="#">✉️</a>
+        </div>
+      </div>
     </div>
 
-    <!-- PAYMENT MODAL -->
-    <div class="modal" id="paymentModal" aria-hidden="true">
-        <div class="modal-card">
-            <div class="modal-hdr">
-                <h2>Cash Payment</h2><button class="icon-btn" id="paymentModalClose">X</button>
-            </div>
-            <div class="step-bar">
-                <div class="step-item done">1 Cart</div>
-                <div class="step-item done">2 Address</div>
-                <div class="step-item active">3 Payment</div>
-                <div class="step-item">4 Confirm</div>
-            </div>
-            <div class="pay-options">
-                <div class="pay-card selected" data-method="cod">
-                    <div class="pay-icon">💵</div>
-                    <div class="pay-info">
-                        <div class="pay-title">Cash on Delivery</div>
-                        <div class="pay-sub">Pay when your order arrives</div>
-                    </div>
-                    <div class="pay-check">✓</div>
-                </div>
-                <div class="pay-card" data-method="upi">
-                    <div class="pay-icon">📱</div>
-                    <div class="pay-info">
-                        <div class="pay-title">UPI / GPay / PhonePe</div>
-                        <div class="pay-sub">Instant payment via UPI</div>
-                    </div>
-                    <div class="pay-check"></div>
-                </div>
-                <div class="pay-card" data-method="card">
-                    <div class="pay-icon">💳</div>
-                    <div class="pay-info">
-                        <div class="pay-title">Credit / Debit Card</div>
-                        <div class="pay-sub">Visa, Mastercard, RuPay</div>
-                    </div>
-                    <div class="pay-check"></div>
-                </div>
-            </div>
-            <div class="modal-actions">
-                <button class="btn-outline" id="paymentModalClose2">↑ Back</button>
-                <button class="btn-primary" id="placeOrderBtn">Place Order 🎉</button>
-            </div>
-        </div>
+    <div class="footer-bottom">© 2025 FreshBasket - All Rights Reserved.</div>
+  </footer>
+
+  <!-- BACK TO TOP -->
+  <button id="backToTop" title="Back to top">↑</button>
+
+  <!-- Contact Toast (top-center, shown by #contactToast id) -->
+  <div id="contactToast">
+    Email: support@freshbasket.com | Tel: +91 9699828099
+  </div>
+
+  <!-- BILL MODAL -->
+  <div class="modal" id="billModal" aria-hidden="true">
+    <div class="modal-card bill-card">
+      <div class="modal-hdr">
+        <h2>Order Confirmation</h2>
+        <button id="billCancelFinal" class="icon-btn">×</button>
+      </div>
+      <div class="step-bar">
+        <div class="step-item done">1 Cart</div>
+        <div class="step-item done">2 Address</div>
+        <div class="step-item done">3 Payment</div>
+        <div class="step-item active">4 Confirm</div>
+      </div>
+      <div id="billContent"></div>
+      <div style="
+            margin-top: 12px;
+            text-align: right;
+            font-weight: 800;
+            font-size: 18px;
+          ">
+        Total: Rs. <span id="billTotal"></span>
+      </div>
+      <div class="modal-actions">
+        <button id="printBillBtn" class="btn-outline">Print</button>
+        <button id="billConfirmBtn" class="btn-primary">Confirm Order</button>
+      </div>
     </div>
+  </div>
 
-    <!-- CONTACT MODAL -->
-    <div class="modal content-modal" id="contactModal" aria-hidden="true">
-        <div class="modal-card">
-            <div class="modal-hdr">
-                <h2>Contact Us</h2><button class="icon-btn" id="contactModalClose">X</button>
-            </div>
-            <p class="muted">We'd love to hear from you. Fill in the form below and we'll respond within 24 hours.</p>
-            <div class="contact-form">
-                <div class="form-field"><label>Name</label><input id="ctName" placeholder="Your name" /></div>
-                <div class="form-field"><label>Email</label><input id="ctEmail" type="email"
-                        placeholder="you@email.com" /></div>
-                <div class="form-field"><label>Message</label><textarea id="ctMsg"
-                        placeholder="Type your message..."></textarea></div>
-            </div>
-            <div class="modal-actions">
-                <button class="btn-outline" id="contactModalClose2">Cancel</button>
-                <button class="btn-primary" id="contactSendBtn">Send Message</button>
-            </div>
-        </div>
-    </div>
+  <script>
+    const API_URL = "http://localhost:5000/api";
+    let PRODUCTS = []; // Fetched once from DB
 
-    <!-- FAQ MODAL -->
-    <div class="modal content-modal" id="faqModal" aria-hidden="true">
-        <div class="modal-card">
-            <div class="modal-hdr">
-                <h2>â" FAQ</h2><button class="icon-btn" id="faqModalClose">×</button>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q">How fast is delivery?</div>
-                <div class="faq-a">We deliver within 2-4 hours in most areas. Same-day delivery is available for
-                    orders
-                    placed before 6 PM.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q">What are your delivery hours?</div>
-                <div class="faq-a">We deliver 7 days a week from 8 AM to 9 PM. No delivery on public holidays.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q">Can I cancel my order?</div>
-                <div class="faq-a">Yes, orders can be cancelled within 30 minutes of placement by contacting our support
-                    team.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q">Are the products fresh?</div>
-                <div class="faq-a">All products are sourced daily from local farms and certified vendors to ensure
-                    maximum freshness.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q">What payment methods do you accept?</div>
-                <div class="faq-a">We accept Cash on Delivery, UPI (GPay, PhonePe, Paytm), and Credit / Debit cards.
-                </div>
-            </div>
-            <div class="modal-actions"><button class="btn-primary" id="faqModalClose2">Close</button></div>
-        </div>
-    </div>
+    const state = {
+      products: PRODUCTS.slice(),
+      cart: JSON.parse(localStorage.getItem("fb_cart") || "{}"),
+      wishlist: JSON.parse(localStorage.getItem("fb_wishlist") || "[]"),
+      filter: "All",
+      sort: "default",
+      theme: localStorage.getItem("fb_theme") || "light",
+      search: "",
+      discount: 0,
+      discountType: null,
+      auth: JSON.parse(
+        localStorage.getItem("fb_auth") || '{"isLoggedIn":false,"user":null}',
+      ),
+      deliveryAddress: null,
+      paymentMethod: "cod",
+    };
 
-    <!-- SHIPPING MODAL -->
-    <div class="modal content-modal" id="shippingModal" aria-hidden="true">
-        <div class="modal-card">
-            <div class="modal-hdr">
-                <h2>🚚 Shipping Info</h2><button class="icon-btn" id="shippingModalClose">×</button>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q">Standard Delivery (Free)</div>
-                <div class="faq-a">Orders above Rs.299 qualify for free delivery. Delivered in 2-4 hours.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q">Express Delivery (Rs.29)</div>
-                <div class="faq-a">Get your order in 60 minutes. Available in select city zones.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q">Delivery Zones</div>
-                <div class="faq-a">We currently serve Mumbai, Pune, Bengaluru, Hyderabad, Chennai, and Delhi NCR. More
-                    cities coming soon!</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q">Tracking Your Order</div>
-                <div class="faq-a">Once your order is shipped, you'll receive a tracking update in your Order History
-                    section.</div>
-            </div>
-            <div class="modal-actions"><button class="btn-primary" id="shippingModalClose2">Close</button></div>
-        </div>
-    </div>
+    const productGrid = document.getElementById("productGrid"),
+      skeletonWrap = document.getElementById("skeletonWrap"),
+      categoryBar = document.getElementById("categoryBar"),
+      searchInput = document.getElementById("searchInput"),
+      suggestionsEl = document.getElementById("suggestions"),
+      openCartBtn = document.getElementById("openCartBtn"),
+      cartPanel = document.getElementById("cartPanel"),
+      overlay = document.getElementById("overlay"),
+      cartItemsWrap = document.getElementById("cartItemsWrap"),
+      cartTotal = document.getElementById("cartTotal"),
+      cartCountBadge = document.getElementById("cartCountBadge"),
+      toastWrap = document.getElementById("toastWrap"),
+      quickModal = document.getElementById("quickModal"),
+      quickImg = document.getElementById("quickImg"),
+      quickTitle = document.getElementById("quickTitle"),
+      quickDesc = document.getElementById("quickDesc"),
+      quickPrice = document.getElementById("quickPrice"),
+      quickAdd = document.getElementById("quickAdd"),
+      quickClose = document.getElementById("quickClose"),
+      themeToggle = document.getElementById("themeToggle"),
+      authModal = document.getElementById("authModal"),
+      openLogin = document.getElementById("openLogin"),
+      authClose = document.getElementById("authClose"),
+      navDesktop = document.getElementById("navDesktop"),
+      hambtn = document.getElementById("hambtn"),
+      carouselTrack = document.getElementById("carouselTrack"),
+      carouselDots = document.getElementById("carouselDots"),
+      userProfile = document.getElementById("userProfile"),
+      profileBtn = document.getElementById("profileBtn"),
+      profileDropdown = document.getElementById("profileDropdown"),
+      logoutBtn = document.getElementById("logoutBtn"),
+      viewProfileBtn = document.getElementById("viewProfileBtn"),
+      viewOrdersBtn = document.getElementById("viewOrdersBtn"),
+      profileModal = document.getElementById("profileModal"),
+      ordersModal = document.getElementById("ordersModal"),
+      profileModalClose = document.getElementById("profileModalClose"),
+      profileModalCancel = document.getElementById("profileModalCancel"),
+      ordersModalClose = document.getElementById("ordersModalClose"),
+      ordersModalCancel = document.getElementById("ordersModalCancel"),
+      profileAvatarXl = document.getElementById("profileAvatarXl"),
+      profileDisplayName = document.getElementById("profileDisplayName"),
+      profileDisplayEmail = document.getElementById("profileDisplayEmail"),
+      profileJoinDate = document.getElementById("profileJoinDate"),
+      ordersContainer = document.getElementById("ordersContainer"),
+      wishlistPanel = document.getElementById("wishlistPanel"),
+      wishlistItemsWrap = document.getElementById("wishlistItemsWrap"),
+      openWishlistBtn = document.getElementById("openWishlistBtn"),
+      closeWishlistBtn = document.getElementById("closeWishlistBtn"),
+      wishCountBadge = document.getElementById("wishCountBadge"),
+      resultCount = document.getElementById("resultCount"),
+      sortSelect = document.getElementById("sortSelect");
 
-    <!-- REFUND MODAL -->
-    <div class="modal content-modal" id="refundModal" aria-hidden="true">
-        <div class="modal-card">
-            <div class="modal-hdr">
-                <h2>📄 Refund Policy</h2><button class="icon-btn" id="refundModalClose">×</button>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q">Eligibility</div>
-                <div class="faq-a">Refunds are applicable for damaged, expired, or incorrect items delivered to you.
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q">How to Request</div>
-                <div class="faq-a">Contact us within 24 hours of delivery with your Order ID and a photo of the issue.
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q">Refund Timeline</div>
-                <div class="faq-a">Approved refunds are processed within 3-5 business days to your original payment
-                    method.</div>
-            </div>
-            <div class="modal-actions"><button class="btn-primary" id="refundModalClose2">Close</button></div>
-        </div>
-    </div>
+    function $(sel, root = document) {
+      return root.querySelector(sel);
+    }
+    function $all(sel, root = document) {
+      return Array.from(root.querySelectorAll(sel));
+    }
+    function saveCart() {
+      localStorage.setItem("fb_cart", JSON.stringify(state.cart));
+    }
+    function saveTheme() {
+      localStorage.setItem("fb_theme", state.theme);
+    }
+    function saveAuth() {
+      localStorage.setItem("fb_auth", JSON.stringify(state.auth));
+    }
+    function saveWishlist() {
+      localStorage.setItem("fb_wishlist", JSON.stringify(state.wishlist));
+    }
+    function formatPrice(n) {
+      return Number(n).toFixed(0);
+    }
+    function openModal(el) {
+      el.classList.add("open");
+      el.removeAttribute("aria-hidden");
+      overlay.classList.add("show");
+    }
+    function closeModal(el) {
+      el.classList.remove("open");
+      el.setAttribute("aria-hidden", "true");
+      overlay.classList.remove("show");
+    }
 
-    <!-- T&C MODAL -->
-    <div class="modal content-modal" id="tcModal" aria-hidden="true">
-        <div class="modal-card">
-            <div class="modal-hdr">
-                <h2>📜 Terms &amp; Conditions</h2><button class="icon-btn" id="tcModalClose">×</button>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q">Use of Service</div>
-                <div class="faq-a">FreshBasket services are intended for personal, non-commercial use only.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q">Account</div>
-                <div class="faq-a">You are responsible for maintaining the confidentiality of your account and password.
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q">Pricing</div>
-                <div class="faq-a">All prices are in Indian Rupees (INR) and are subject to change without prior notice.
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q">Governing Law</div>
-                <div class="faq-a">These terms are governed by the laws of India and disputes shall be subject to the
-                    jurisdiction of Indian courts.</div>
-            </div>
-            <div class="modal-actions"><button class="btn-primary" id="tcModalClose2">Close</button></div>
-        </div>
-    </div>
-    <footer class="footer">
-        <div class="footer-container">
+    function renderStars(rating) {
+      const full = Math.floor(rating),
+        half = rating % 1 >= 0.5;
+      let s = "";
+      for (let i = 0; i < 5; i++)
+        s += i < full ? "★" : i === full && half ? "½" : "☆";
+      return `<span class="stars">${s}</span><span class="rating-val">${rating}</span>`;
+    }
+    function stockBadge(stock) {
+      if (stock === 0)
+        return `<span class="badge out-stock">Out of Stock</span>`;
+      if (stock <= 20)
+        return `<span class="badge low-stock">Only ${stock} left</span>`;
+      return `<span class="badge in-stock">In Stock</span>`;
+    }
 
-            <!-- Profile Modal -->
-            <div class="modal" id="profileModal" role="dialog" aria-hidden="true">
-                <div class="modal-card">
-                    <div class="modal-hdr">
-                        <h2>👤 My Profile</h2>
-                        <button class="icon-btn" id="profileModalClose" aria-label="close">×</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="profile-info">
-                            <div class="profile-avatar-xl" id="profileAvatarXl">U</div>
-                            <div class="profile-details">
-                                <div class="profile-field">
-                                    <label>Name</label>
-                                    <div class="field-value" id="profileDisplayName">User</div>
-                                </div>
-                                <div class="profile-field">
-                                    <label>Email</label>
-                                    <div class="field-value" id="profileDisplayEmail">user@example.com</div>
-                                </div>
-                                <div class="profile-field">
-                                    <label>Member Since</label>
-                                    <div class="field-value" id="profileJoinDate">January 2026</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn-outline" id="profileModalCancel">Close</button>
-                    </div>
-                </div>
-            </div>
+    (function initTheme() {
+      document.body.setAttribute("data-theme", state.theme);
+      themeToggle.textContent =
+        state.theme === "dark" ? "☀️ Theme" : "🌙 Theme";
+      themeToggle.addEventListener("click", () => {
+        state.theme = state.theme === "dark" ? "light" : "dark";
+        document.body.setAttribute("data-theme", state.theme);
+        themeToggle.textContent =
+          state.theme === "dark" ? "☀️ Theme" : "🌙 Theme";
+        saveTheme();
+        showToast("Theme switched");
+      });
+    })();
 
-            <!-- Order History Modal -->
-            <div class="modal" id="ordersModal" role="dialog" aria-hidden="true">
-                <div class="modal-card">
-                    <div class="modal-hdr">
-                        <h2>📦 Order History</h2>
-                        <button class="icon-btn" id="ordersModalClose" aria-label="close">×</button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="ordersContainer">
-                            <!-- Orders will be dynamically inserted here -->
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn-outline" id="ordersModalCancel">Close</button>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-col">
-                <h4>FreshBasket</h4>
-                <p class="muted">
-                    Your trusted partner for fresh groceries delivered fast, safe, and hassle-free.
-                </p>
-            </div>
-            <div class="footer-col">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#products">Products</a></li>
-                    <li><a href="#offers">Offers</a></li>
-                    <li><a href="#" id="footerContactLink">Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Customer Support</h4>
-                <ul>
-                    <li><a href="#">FAQ</a></li>
-                    <li><a href="#">Shipping Info</a></li>
-                    <li><a href="#">Refund Policy</a></li>
-                    <li><a href="#">Terms & Conditions</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Stay Updated</h4>
-                <input type="email" placeholder="Enter your email" class="newsletter-input" />
-                <button class="newsletter-btn">Subscribe</button>
+    hambtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      navDesktop.classList.toggle("active");
+    });
+    document.addEventListener("click", (e) => {
+      if (!hambtn.contains(e.target) && !navDesktop.contains(e.target))
+        navDesktop.classList.remove("active");
+    });
+    $all("nav a").forEach((a) =>
+      a.addEventListener("click", () =>
+        navDesktop.classList.remove("active"),
+      ),
+    );
 
-                <div class="social-icons">
-                    <a href="#">🌐</a>
-                    <a href="#">📞</a>
-                    <a href="#">📸</a>
-                    <a href="#">✉️</a>
-                </div>
-            </div>
+    function renderCategories() {
+      const cats = ["All", ...new Set(PRODUCTS.map((p) => p.category))];
+      categoryBar.innerHTML = "";
+      cats.forEach((c) => {
+        const count =
+          c === "All"
+            ? PRODUCTS.length
+            : PRODUCTS.filter((p) => p.category === c).length;
+        const d = document.createElement("div");
+        d.className = "chip" + (state.filter === c ? " active" : "");
+        d.innerHTML = `${c}<span class="chip-count">${count}</span>`;
+        d.addEventListener("click", () => {
+          state.filter = c;
+          renderProducts();
+          renderCategories();
+        });
+        categoryBar.appendChild(d);
+      });
+    }
 
-        </div>
+    function showSkeletons() {
+      skeletonWrap.innerHTML = "";
+      for (let i = 0; i < 6; i++) {
+        const s = document.createElement("div");
+        s.className = "card";
+        s.innerHTML = `<div class="skeleton" style="height:160px;border-radius:10px"></div><div style="height:18px" class="skeleton"></div><div style="height:18px;width:60%;margin-top:8px" class="skeleton"></div>`;
+        skeletonWrap.appendChild(s);
+      }
+    }
 
-        <div class="footer-bottom">
-            © 2025 FreshBasket - All Rights Reserved.
-        </div>
-    </footer>
+    function getSortedFiltered() {
+      const q = (state.search || "").toLowerCase();
+      let list = state.products.filter((p) => {
+        if (state.filter !== "All" && p.category !== state.filter)
+          return false;
+        if (
+          q &&
+          !(
+            p.name.toLowerCase().includes(q) ||
+            p.category.toLowerCase().includes(q)
+          )
+        )
+          return false;
+        return true;
+      });
+      if (state.sort === "price-asc") list.sort((a, b) => a.price - b.price);
+      else if (state.sort === "price-desc")
+        list.sort((a, b) => b.price - a.price);
+      else if (state.sort === "rating")
+        list.sort((a, b) => b.rating - a.rating);
+      else if (state.sort === "name")
+        list.sort((a, b) => a.name.localeCompare(b.name));
+      return list;
+    }
 
-    <!-- BACK TO TOP -->
-    <button id="backToTop" title="Back to top">↑</button>
-
-    <!-- Contact Toast (top-center, shown by #contactToast id) -->
-    <div id="contactToast">
-        Email: support@freshbasket.com | Tel: +91 9699828099
-    </div>
-
-    <!-- BILL MODAL -->
-    <div class="modal" id="billModal" aria-hidden="true">
-        <div class="modal-card bill-card">
-            <div class="modal-hdr">
-                <h2>Order Confirmation</h2><button id="billCancelFinal" class="icon-btn">×</button>
-            </div>
-            <div class="step-bar">
-                <div class="step-item done">1 Cart</div>
-                <div class="step-item done">2 Address</div>
-                <div class="step-item done">3 Payment</div>
-                <div class="step-item active">4 Confirm</div>
-            </div>
-            <div id="billContent"></div>
-            <div style="margin-top:12px;text-align:right;font-weight:800;font-size:18px">Total: Rs. <span
-                    id="billTotal"></span></div>
-            <div class="modal-actions">
-                <button id="printBillBtn" class="btn-outline">Print</button>
-                <button id="billConfirmBtn" class="btn-primary">Confirm Order</button>
-            </div>
-        </div>
-    </div>
-
-
-    <script>
-        const API_URL = 'http://localhost:5000/api';
-        let PRODUCTS = []; // Fetched once from DB
-
-        const state = {
-            products: PRODUCTS.slice(),
-            cart: JSON.parse(localStorage.getItem('fb_cart') || '{}'),
-            wishlist: JSON.parse(localStorage.getItem('fb_wishlist') || '[]'),
-            filter: 'All', sort: 'default', theme: localStorage.getItem('fb_theme') || 'light',
-            search: '', discount: 0, discountType: null,
-            auth: JSON.parse(localStorage.getItem('fb_auth') || '{"isLoggedIn":false,"user":null}'),
-            deliveryAddress: null, paymentMethod: 'cod'
-        };
-
-        const productGrid = document.getElementById('productGrid'), skeletonWrap = document.getElementById('skeletonWrap'),
-            categoryBar = document.getElementById('categoryBar'), searchInput = document.getElementById('searchInput'),
-            suggestionsEl = document.getElementById('suggestions'), openCartBtn = document.getElementById('openCartBtn'),
-            cartPanel = document.getElementById('cartPanel'), overlay = document.getElementById('overlay'),
-            cartItemsWrap = document.getElementById('cartItemsWrap'), cartTotal = document.getElementById('cartTotal'),
-            cartCountBadge = document.getElementById('cartCountBadge'), toastWrap = document.getElementById('toastWrap'),
-            quickModal = document.getElementById('quickModal'), quickImg = document.getElementById('quickImg'),
-            quickTitle = document.getElementById('quickTitle'), quickDesc = document.getElementById('quickDesc'),
-            quickPrice = document.getElementById('quickPrice'), quickAdd = document.getElementById('quickAdd'),
-            quickClose = document.getElementById('quickClose'), themeToggle = document.getElementById('themeToggle'),
-            authModal = document.getElementById('authModal'), openLogin = document.getElementById('openLogin'),
-            authClose = document.getElementById('authClose'), navDesktop = document.getElementById('navDesktop'),
-            hambtn = document.getElementById('hambtn'), carouselTrack = document.getElementById('carouselTrack'),
-            carouselDots = document.getElementById('carouselDots'), userProfile = document.getElementById('userProfile'),
-            profileBtn = document.getElementById('profileBtn'), profileDropdown = document.getElementById('profileDropdown'),
-            logoutBtn = document.getElementById('logoutBtn'), viewProfileBtn = document.getElementById('viewProfileBtn'),
-            viewOrdersBtn = document.getElementById('viewOrdersBtn'), profileModal = document.getElementById('profileModal'),
-            ordersModal = document.getElementById('ordersModal'), profileModalClose = document.getElementById('profileModalClose'),
-            profileModalCancel = document.getElementById('profileModalCancel'), ordersModalClose = document.getElementById('ordersModalClose'),
-            ordersModalCancel = document.getElementById('ordersModalCancel'), profileAvatarXl = document.getElementById('profileAvatarXl'),
-            profileDisplayName = document.getElementById('profileDisplayName'), profileDisplayEmail = document.getElementById('profileDisplayEmail'),
-            profileJoinDate = document.getElementById('profileJoinDate'), ordersContainer = document.getElementById('ordersContainer'),
-            wishlistPanel = document.getElementById('wishlistPanel'), wishlistItemsWrap = document.getElementById('wishlistItemsWrap'),
-            openWishlistBtn = document.getElementById('openWishlistBtn'), closeWishlistBtn = document.getElementById('closeWishlistBtn'),
-            wishCountBadge = document.getElementById('wishCountBadge'), resultCount = document.getElementById('resultCount'),
-            sortSelect = document.getElementById('sortSelect');
-
-        function $(sel, root = document) { return root.querySelector(sel); }
-        function $all(sel, root = document) { return Array.from(root.querySelectorAll(sel)); }
-        function saveCart() { localStorage.setItem('fb_cart', JSON.stringify(state.cart)); }
-        function saveTheme() { localStorage.setItem('fb_theme', state.theme); }
-        function saveAuth() { localStorage.setItem('fb_auth', JSON.stringify(state.auth)); }
-        function saveWishlist() { localStorage.setItem('fb_wishlist', JSON.stringify(state.wishlist)); }
-        function formatPrice(n) { return Number(n).toFixed(0); }
-        function openModal(el) { el.classList.add('open'); el.removeAttribute('aria-hidden'); overlay.classList.add('show'); }
-        function closeModal(el) { el.classList.remove('open'); el.setAttribute('aria-hidden', 'true'); }
-
-        function renderStars(rating) {
-            const full = Math.floor(rating), half = rating % 1 >= 0.5;
-            let s = ''; for (let i = 0; i < 5; i++) s += i < full ? '★' : (i === full && half ? '½' : '☆');
-            return `<span class="stars">${s}</span><span class="rating-val">${rating}</span>`;
-        }
-        function stockBadge(stock) {
-            if (stock === 0) return `<span class="badge out-stock">Out of Stock</span>`;
-            if (stock <= 20) return `<span class="badge low-stock">Only ${stock} left</span>`;
-            return `<span class="badge in-stock">In Stock</span>`;
-        }
-
-        (function initTheme() {
-            document.body.setAttribute('data-theme', state.theme);
-            themeToggle.textContent = state.theme === 'dark' ? '☀️ Theme' : '🌙 Theme';
-            themeToggle.addEventListener('click', () => {
-                state.theme = state.theme === 'dark' ? 'light' : 'dark';
-                document.body.setAttribute('data-theme', state.theme);
-                themeToggle.textContent = state.theme === 'dark' ? '☀️ Theme' : '🌙 Theme';
-                saveTheme(); showToast('Theme switched');
-            });
-        })();
-
-        hambtn.addEventListener('click', (e) => { e.stopPropagation(); navDesktop.classList.toggle('active'); });
-        document.addEventListener('click', (e) => { if (!hambtn.contains(e.target) && !navDesktop.contains(e.target)) navDesktop.classList.remove('active'); });
-        $all('nav a').forEach(a => a.addEventListener('click', () => navDesktop.classList.remove('active')));
-
-        function renderCategories() {
-            const cats = ['All', ...new Set(PRODUCTS.map(p => p.category))];
-            categoryBar.innerHTML = '';
-            cats.forEach(c => {
-                const count = c === 'All' ? PRODUCTS.length : PRODUCTS.filter(p => p.category === c).length;
-                const d = document.createElement('div'); d.className = 'chip' + (state.filter === c ? ' active' : '');
-                d.innerHTML = `${c}<span class="chip-count">${count}</span>`;
-                d.addEventListener('click', () => { state.filter = c; renderProducts(); renderCategories(); });
-                categoryBar.appendChild(d);
-            });
-        }
-
-        function showSkeletons() {
-            skeletonWrap.innerHTML = '';
-            for (let i = 0; i < 6; i++) {
-                const s = document.createElement('div'); s.className = 'card';
-                s.innerHTML = `<div class="skeleton" style="height:160px;border-radius:10px"></div><div style="height:18px" class="skeleton"></div><div style="height:18px;width:60%;margin-top:8px" class="skeleton"></div>`;
-                skeletonWrap.appendChild(s);
-            }
-        }
-
-        function getSortedFiltered() {
-            const q = (state.search || '').toLowerCase();
-            let list = state.products.filter(p => {
-                if (state.filter !== 'All' && p.category !== state.filter) return false;
-                if (q && !(p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q))) return false;
-                return true;
-            });
-            if (state.sort === 'price-asc') list.sort((a, b) => a.price - b.price);
-            else if (state.sort === 'price-desc') list.sort((a, b) => b.price - a.price);
-            else if (state.sort === 'rating') list.sort((a, b) => b.rating - a.rating);
-            else if (state.sort === 'name') list.sort((a, b) => a.name.localeCompare(b.name));
-            return list;
-        }
-
-        function renderProducts() {
-            productGrid.innerHTML = ''; const list = getSortedFiltered();
-            resultCount.textContent = `Showing ${list.length} product${list.length !== 1 ? 's' : ''}`;
-            if (!list.length) {
-                productGrid.innerHTML = `<div style="grid-column:1/-1;padding:24px;background:var(--card);border-radius:12px;text-align:center" class="muted">No items found. Try a different search or category.</div>`;
-                skeletonWrap.innerHTML = ''; return;
-            }
-            list.forEach(p => {
-                const isWished = state.wishlist.includes(p.id);
-                const card = document.createElement('div'); card.className = 'card';
-                card.innerHTML = `
-                    <button class="wish-btn${isWished ? ' active' : ''}" data-id="${p.id}" title="${isWished ? 'Remove from wishlist' : 'Add to wishlist'}">${isWished ? '❤️' : '🤍'}</button>
+    function renderProducts() {
+      productGrid.innerHTML = "";
+      const list = getSortedFiltered();
+      resultCount.textContent = `Showing ${list.length} product${list.length !== 1 ? "s" : ""}`;
+      if (!list.length) {
+        productGrid.innerHTML = `<div style="grid-column:1/-1;padding:24px;background:var(--card);border-radius:12px;text-align:center" class="muted">No items found. Try a different search or category.</div>`;
+        skeletonWrap.innerHTML = "";
+        return;
+      }
+      list.forEach((p) => {
+        const isWished = state.wishlist.includes(p.id);
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+                    <button class="wish-btn${isWished ? " active" : ""}" data-id="${p.id}" title="${isWished ? "Remove from wishlist" : "Add to wishlist"}">${isWished ? "❤️" : "🤍"}</button>
                     <img src="${p.img}" alt="${p.name}" loading="lazy">
                     <div style="display:flex;flex-direction:column;gap:6px">
                         <div class="meta"><div style="font-weight:700">${p.name}</div><div class="price">Rs.${p.price}</div></div>
                         <div class="card-meta-row">${renderStars(p.rating)}${stockBadge(p.stock)}</div>
                         <div style="display:flex;gap:8px">
                             <button class="icon-btn quick" data-id="${p.id}">Quick view</button>
-                            <button class="icon-btn add" data-id="${p.id}" style="margin-left:auto;background:var(--primary);color:#fff;border-radius:8px;padding:8px 12px"${p.stock === 0 ? ' disabled' : ''}>Add</button>
+                            <button class="icon-btn add" data-id="${p.id}" style="margin-left:auto;background:var(--primary);color:#fff;border-radius:8px;padding:8px 12px"${p.stock === 0 ? " disabled" : ""}>Add</button>
                         </div>
                     </div>`;
-                productGrid.appendChild(card);
-            });
-            $all('.card .add').forEach(btn => btn.addEventListener('click', onAddClick));
-            $all('.card .quick').forEach(btn => btn.addEventListener('click', onQuick));
-            $all('.card .wish-btn').forEach(btn => btn.addEventListener('click', onWishClick));
-            skeletonWrap.innerHTML = '';
+        productGrid.appendChild(card);
+      });
+      $all(".card .add").forEach((btn) =>
+        btn.addEventListener("click", onAddClick),
+      );
+      $all(".card .quick").forEach((btn) =>
+        btn.addEventListener("click", onQuick),
+      );
+      $all(".card .wish-btn").forEach((btn) =>
+        btn.addEventListener("click", onWishClick),
+      );
+      skeletonWrap.innerHTML = "";
+    }
+
+    sortSelect.addEventListener("change", () => {
+      state.sort = sortSelect.value;
+      renderProducts();
+    });
+
+    function setupSearch() {
+      searchInput.addEventListener("input", (e) => {
+        const v = e.target.value.trim();
+        state.search = v;
+        if (!v) {
+          suggestionsEl.style.display = "none";
+          renderProducts();
+          return;
         }
-
-        sortSelect.addEventListener('change', () => { state.sort = sortSelect.value; renderProducts(); });
-
-        function setupSearch() {
-            searchInput.addEventListener('input', e => {
-                const v = e.target.value.trim(); state.search = v;
-                if (!v) { suggestionsEl.style.display = 'none'; renderProducts(); return; }
-                const matches = PRODUCTS.filter(p => p.name.toLowerCase().includes(v.toLowerCase()) || p.category.toLowerCase().includes(v.toLowerCase())).slice(0, 6);
-                suggestionsEl.innerHTML = '';
-                matches.forEach(m => {
-                    const it = document.createElement('div'); it.className = 'item';
-                    it.innerHTML = m.name.replace(new RegExp(v, 'ig'), mx => `<strong>${mx}</strong>`) + ` <span class="muted">- ${m.category}</span>`;
-                    it.addEventListener('click', () => { searchInput.value = m.name; state.search = m.name; suggestionsEl.style.display = 'none'; renderProducts(); });
-                    suggestionsEl.appendChild(it);
-                });
-                suggestionsEl.style.display = matches.length ? 'block' : 'none'; renderProducts();
-            });
-            document.addEventListener('click', (e) => { if (!e.target.closest('.search-suggestions')) suggestionsEl.style.display = 'none'; });
-        }
-
-        function showToast(text, ms = 2500) {
-            const t = document.createElement('div'); t.className = 'toast'; t.textContent = text; toastWrap.appendChild(t);
-            requestAnimationFrame(() => t.classList.add('show'));
-            setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, ms);
-        }
-
-        function getCartCount() { return Object.values(state.cart).reduce((s, v) => s + v, 0); }
-        function getCartRaw() { return Object.keys(state.cart).reduce((s, id) => { const p = PRODUCTS.find(x => x.id == id); return s + (p ? p.price * state.cart[id] : 0); }, 0); }
-        function getCartTotal() { return Math.max(0, getCartRaw() - state.discount); }
-
-        function renderCart() {
-            cartItemsWrap.innerHTML = '';
-            const ids = Object.keys(state.cart).map(Number);
-            if (!ids.length) {
-                cartItemsWrap.innerHTML = '<div class="empty-state-msg"><div class="big-emoji">Cart</div><div>Your cart is empty</div></div>';
-                cartTotal.textContent = '0'; cartCountBadge.textContent = '0';
-                document.getElementById('discountLine').style.display = 'none'; return;
-            }
-            ids.forEach(id => {
-                const p = PRODUCTS.find(x => x.id === id), qty = state.cart[id];
-                const div = document.createElement('div'); div.className = 'cart-item';
-                div.innerHTML = `<img src="${p.img}" alt="${p.name}"><div style="flex:1"><div style="font-weight:700">${p.name}</div><div class="muted">Rs.${p.price} x ${qty} = Rs.${p.price * qty}</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px"><div class="qty"><button class="icon-btn dec" data-id="${id}">-</button><span style="padding:6px 8px">${qty}</span><button class="icon-btn inc" data-id="${id}">+</button></div><button class="icon-btn remove muted" data-id="${id}">Remove</button></div>`;
-                cartItemsWrap.appendChild(div);
-            });
-            if (state.discount > 0) {
-                document.getElementById('discountLine').style.display = 'flex';
-                document.getElementById('discountAmt').textContent = '-Rs.' + state.discount;
-            } else { document.getElementById('discountLine').style.display = 'none'; }
-            cartTotal.textContent = getCartTotal(); cartCountBadge.textContent = getCartCount();
-            $all('.cart-item .inc').forEach(b => b.addEventListener('click', e => changeQty(Number(e.currentTarget.dataset.id), 1)));
-            $all('.cart-item .dec').forEach(b => b.addEventListener('click', e => changeQty(Number(e.currentTarget.dataset.id), -1)));
-            $all('.cart-item .remove').forEach(b => b.addEventListener('click', e => removeFromCart(Number(e.currentTarget.dataset.id))));
-        }
-        function changeQty(id, delta) { state.cart[id] = Math.max(0, (state.cart[id] || 0) + delta); if (state.cart[id] === 0) delete state.cart[id]; saveCart(); renderCart(); }
-        function removeFromCart(id) { delete state.cart[id]; saveCart(); renderCart(); showToast('Removed from cart'); }
-
-        function onAddClick(e) {
-            if (!state.auth.isLoggedIn) { openModal(authModal); showToast('Please login to add items to cart'); return; }
-            const id = Number(e.currentTarget.dataset.id), product = PRODUCTS.find(p => p.id === id);
-            if (product.stock === 0) { showToast('This item is out of stock'); return; }
-            state.cart[id] = (state.cart[id] || 0) + 1; saveCart(); renderCart(); showToast(`${product.name} added to cart`);
-            const cardImg = e.currentTarget.closest('.card').querySelector('img');
-            if (cardImg) {
-                const fly = cardImg.cloneNode(true), r = cardImg.getBoundingClientRect(), cr = openCartBtn.getBoundingClientRect();
-                fly.style.cssText = `position:fixed;left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px;transition:transform 0.8s cubic-bezier(.2,.9,.2,1),opacity 0.6s;z-index:2000`;
-                document.body.appendChild(fly);
-                requestAnimationFrame(() => { fly.style.transform = `translate(${cr.left - r.left}px,${cr.top - r.top}px) scale(0.12)`; fly.style.opacity = '0.2'; });
-                setTimeout(() => fly.remove(), 900);
-            }
-        }
-
-        const COUPONS = { 'FRESH10': { type: 'percent', value: 10 }, 'SAVE20': { type: 'flat', value: 20 } };
-        document.getElementById('applyCouponBtn').addEventListener('click', () => {
-            const code = document.getElementById('couponInput').value.trim().toUpperCase();
-            if (!code) return showToast('Enter a coupon code');
-            if (COUPONS[code]) {
-                const c = COUPONS[code]; state.discount = c.type === 'percent' ? Math.round(getCartRaw() * c.value / 100) : c.value;
-                state.discountType = code; renderCart(); showToast(`Coupon "${code}" applied!`);
-            } else { showToast('Invalid coupon code'); }
+        const matches = PRODUCTS.filter(
+          (p) =>
+            p.name.toLowerCase().includes(v.toLowerCase()) ||
+            p.category.toLowerCase().includes(v.toLowerCase()),
+        ).slice(0, 6);
+        suggestionsEl.innerHTML = "";
+        matches.forEach((m) => {
+          const it = document.createElement("div");
+          it.className = "item";
+          it.innerHTML =
+            m.name.replace(
+              new RegExp(v, "ig"),
+              (mx) => `<strong>${mx}</strong>`,
+            ) + ` <span class="muted">- ${m.category}</span>`;
+          it.addEventListener("click", () => {
+            searchInput.value = m.name;
+            state.search = m.name;
+            suggestionsEl.style.display = "none";
+            renderProducts();
+          });
+          suggestionsEl.appendChild(it);
         });
+        suggestionsEl.style.display = matches.length ? "block" : "none";
+        renderProducts();
+      });
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".search-suggestions"))
+          suggestionsEl.style.display = "none";
+      });
+    }
 
-        function onWishClick(e) {
-            if (!state.auth.isLoggedIn) { openModal(authModal); showToast('Please login to use wishlist'); return; }
-            const id = Number(e.currentTarget.dataset.id), idx = state.wishlist.indexOf(id);
-            if (idx === -1) { state.wishlist.push(id); showToast('Added to wishlist'); }
-            else { state.wishlist.splice(idx, 1); showToast('Removed from wishlist'); }
-            saveWishlist(); renderProducts(); renderWishlist(); wishCountBadge.textContent = state.wishlist.length;
-        }
+    function showToast(text, ms = 2500) {
+      const t = document.createElement("div");
+      t.className = "toast";
+      t.textContent = text;
+      toastWrap.appendChild(t);
+      requestAnimationFrame(() => t.classList.add("show"));
+      setTimeout(() => {
+        t.classList.remove("show");
+        setTimeout(() => t.remove(), 300);
+      }, ms);
+    }
 
-        function renderWishlist() {
-            wishlistItemsWrap.innerHTML = '';
-            if (!state.wishlist.length) { wishlistItemsWrap.innerHTML = '<div class="empty-state-msg">Your wishlist is empty.</div>'; return; }
-            state.wishlist.forEach(id => {
-                const p = PRODUCTS.find(x => x.id === id); if (!p) return;
-                const div = document.createElement('div'); div.className = 'wishlist-item';
-                div.innerHTML = `<img src="${p.img}" alt="${p.name}"><div style="flex:1"><div style="font-weight:700">${p.name}</div><div class="muted">Rs.${p.price}</div></div><div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end"><button class="icon-btn wish-add-btn" data-id="${id}" style="background:var(--primary);color:#fff;border-radius:8px;padding:6px 10px;font-size:12px">Add to Cart</button><button class="icon-btn wish-rem-btn muted" data-id="${id}" style="font-size:12px">Remove</button></div>`;
-                wishlistItemsWrap.appendChild(div);
-            });
-            $all('.wish-add-btn').forEach(b => b.addEventListener('click', e => { const id = Number(e.currentTarget.dataset.id); state.cart[id] = (state.cart[id] || 0) + 1; saveCart(); renderCart(); showToast('Added to cart'); }));
-            $all('.wish-rem-btn').forEach(b => b.addEventListener('click', e => { const id = Number(e.currentTarget.dataset.id); state.wishlist.splice(state.wishlist.indexOf(id), 1); saveWishlist(); renderProducts(); renderWishlist(); }));
-        }
+    function getCartCount() {
+      return Object.values(state.cart).reduce((s, v) => s + v, 0);
+    }
+    function getCartRaw() {
+      return Object.keys(state.cart).reduce((s, id) => {
+        const p = PRODUCTS.find((x) => x.id == id);
+        return s + (p ? p.price * state.cart[id] : 0);
+      }, 0);
+    }
+    function getCartTotal() {
+      return Math.max(0, getCartRaw() - state.discount);
+    }
 
-        openWishlistBtn.addEventListener('click', () => { wishlistPanel.classList.add('open'); overlay.classList.add('show'); });
-        closeWishlistBtn.addEventListener('click', () => { wishlistPanel.classList.remove('open'); overlay.classList.remove('show'); });
+    function renderCart() {
+      cartItemsWrap.innerHTML = "";
+      const ids = Object.keys(state.cart).map(Number);
+      if (!ids.length) {
+        cartItemsWrap.innerHTML =
+          '<div class="empty-state-msg"><div class="big-emoji">Cart</div><div>Your cart is empty</div></div>';
+        cartTotal.textContent = "0";
+        cartCountBadge.textContent = "0";
+        document.getElementById("discountLine").style.display = "none";
+        return;
+      }
+      ids.forEach((id) => {
+        const p = PRODUCTS.find((x) => x.id === id),
+          qty = state.cart[id];
+        const div = document.createElement("div");
+        div.className = "cart-item";
+        div.innerHTML = `<img src="${p.img}" alt="${p.name}"><div style="flex:1"><div style="font-weight:700">${p.name}</div><div class="muted">Rs.${p.price} x ${qty} = Rs.${p.price * qty}</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px"><div class="qty"><button class="icon-btn dec" data-id="${id}">-</button><span style="padding:6px 8px">${qty}</span><button class="icon-btn inc" data-id="${id}">+</button></div><button class="icon-btn remove muted" data-id="${id}">Remove</button></div>`;
+        cartItemsWrap.appendChild(div);
+      });
+      if (state.discount > 0) {
+        document.getElementById("discountLine").style.display = "flex";
+        document.getElementById("discountAmt").textContent =
+          "-Rs." + state.discount;
+      } else {
+        document.getElementById("discountLine").style.display = "none";
+      }
+      cartTotal.textContent = getCartTotal();
+      cartCountBadge.textContent = getCartCount();
+      $all(".cart-item .inc").forEach((b) =>
+        b.addEventListener("click", (e) =>
+          changeQty(Number(e.currentTarget.dataset.id), 1),
+        ),
+      );
+      $all(".cart-item .dec").forEach((b) =>
+        b.addEventListener("click", (e) =>
+          changeQty(Number(e.currentTarget.dataset.id), -1),
+        ),
+      );
+      $all(".cart-item .remove").forEach((b) =>
+        b.addEventListener("click", (e) =>
+          removeFromCart(Number(e.currentTarget.dataset.id)),
+        ),
+      );
+    }
+    function changeQty(id, delta) {
+      state.cart[id] = Math.max(0, (state.cart[id] || 0) + delta);
+      if (state.cart[id] === 0) delete state.cart[id];
+      saveCart();
+      renderCart();
+    }
+    function removeFromCart(id) {
+      delete state.cart[id];
+      saveCart();
+      renderCart();
+      showToast("Removed from cart");
+    }
 
-        let quickProductId = null;
-        function onQuick(e) {
-            const id = Number(e.currentTarget.dataset.id), prod = PRODUCTS.find(p => p.id === id); if (!prod) return;
-            quickProductId = id; quickImg.src = prod.img; quickTitle.textContent = prod.name; quickDesc.textContent = prod.desc || 'Fresh item.'; quickPrice.textContent = prod.price; openModal(quickModal);
-        }
-        quickClose.addEventListener('click', () => closeModal(quickModal));
-        quickAdd.addEventListener('click', () => {
-            if (!quickProductId) return; if (!state.auth.isLoggedIn) { closeModal(quickModal); openModal(authModal); showToast('Please login'); return; }
-            state.cart[quickProductId] = (state.cart[quickProductId] || 0) + 1; saveCart(); renderCart(); closeModal(quickModal); showToast('Added to cart');
+    function onAddClick(e) {
+      if (!state.auth.isLoggedIn) {
+        openModal(authModal);
+        showToast("Please login to add items to cart");
+        return;
+      }
+      const id = Number(e.currentTarget.dataset.id),
+        product = PRODUCTS.find((p) => p.id === id);
+      if (product.stock === 0) {
+        showToast("This item is out of stock");
+        return;
+      }
+      state.cart[id] = (state.cart[id] || 0) + 1;
+      saveCart();
+      renderCart();
+      showToast(`${product.name} added to cart`);
+      const cardImg = e.currentTarget.closest(".card").querySelector("img");
+      if (cardImg) {
+        const fly = cardImg.cloneNode(true),
+          r = cardImg.getBoundingClientRect(),
+          cr = openCartBtn.getBoundingClientRect();
+        fly.style.cssText = `position:fixed;left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px;transition:transform 0.8s cubic-bezier(.2,.9,.2,1),opacity 0.6s;z-index:2000`;
+        document.body.appendChild(fly);
+        requestAnimationFrame(() => {
+          fly.style.transform = `translate(${cr.left - r.left}px,${cr.top - r.top}px) scale(0.12)`;
+          fly.style.opacity = "0.2";
         });
+        setTimeout(() => fly.remove(), 900);
+      }
+    }
 
-        function openCart() { cartPanel.classList.add('open'); overlay.classList.add('show'); }
-        function closeCart() { cartPanel.classList.remove('open'); overlay.classList.remove('show'); }
-        openCartBtn.addEventListener('click', () => { if (cartPanel.classList.contains('open')) closeCart(); else openCart(); });
-        document.getElementById('closeCartBtn').addEventListener('click', closeCart);
+    const COUPONS = {
+      FRESH10: { type: "percent", value: 10 },
+      SAVE20: { type: "flat", value: 20 },
+    };
+    document
+      .getElementById("applyCouponBtn")
+      .addEventListener("click", () => {
+        const code = document
+          .getElementById("couponInput")
+          .value.trim()
+          .toUpperCase();
+        if (!code) return showToast("Enter a coupon code");
+        if (COUPONS[code]) {
+          const c = COUPONS[code];
+          state.discount =
+            c.type === "percent"
+              ? Math.round((getCartRaw() * c.value) / 100)
+              : c.value;
+          state.discountType = code;
+          renderCart();
+          showToast(`Coupon "${code}" applied!`);
+        } else {
+          showToast("Invalid coupon code");
+        }
+      });
 
-        overlay.addEventListener('click', () => {
-            closeCart(); wishlistPanel.classList.remove('open');
-            [quickModal, authModal, profileModal, ordersModal,
-                document.getElementById('addressModal'), document.getElementById('paymentModal'),
-                document.getElementById('contactModal'), document.getElementById('faqModal'),
-                document.getElementById('shippingModal'), document.getElementById('refundModal'),
-                document.getElementById('tcModal')
-            ].forEach(m => { if (m) closeModal(m); });
-            profileDropdown.classList.remove('show'); overlay.classList.remove('show');
+    function onWishClick(e) {
+      if (!state.auth.isLoggedIn) {
+        openModal(authModal);
+        showToast("Please login to use wishlist");
+        return;
+      }
+      const id = Number(e.currentTarget.dataset.id),
+        idx = state.wishlist.indexOf(id);
+      if (idx === -1) {
+        state.wishlist.push(id);
+        showToast("Added to wishlist");
+      } else {
+        state.wishlist.splice(idx, 1);
+        showToast("Removed from wishlist");
+      }
+      saveWishlist();
+      renderProducts();
+      renderWishlist();
+      wishCountBadge.textContent = state.wishlist.length;
+    }
+
+    function renderWishlist() {
+      wishlistItemsWrap.innerHTML = "";
+      if (!state.wishlist.length) {
+        wishlistItemsWrap.innerHTML =
+          '<div class="empty-state-msg">Your wishlist is empty.</div>';
+        return;
+      }
+      state.wishlist.forEach((id) => {
+        const p = PRODUCTS.find((x) => x.id === id);
+        if (!p) return;
+        const div = document.createElement("div");
+        div.className = "wishlist-item";
+        div.innerHTML = `<img src="${p.img}" alt="${p.name}"><div style="flex:1"><div style="font-weight:700">${p.name}</div><div class="muted">Rs.${p.price}</div></div><div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end"><button class="icon-btn wish-add-btn" data-id="${id}" style="background:var(--primary);color:#fff;border-radius:8px;padding:6px 10px;font-size:12px">Add to Cart</button><button class="icon-btn wish-rem-btn muted" data-id="${id}" style="font-size:12px">Remove</button></div>`;
+        wishlistItemsWrap.appendChild(div);
+      });
+      $all(".wish-add-btn").forEach((b) =>
+        b.addEventListener("click", (e) => {
+          const id = Number(e.currentTarget.dataset.id);
+          state.cart[id] = (state.cart[id] || 0) + 1;
+          saveCart();
+          renderCart();
+          showToast("Added to cart");
+        }),
+      );
+      $all(".wish-rem-btn").forEach((b) =>
+        b.addEventListener("click", (e) => {
+          const id = Number(e.currentTarget.dataset.id);
+          state.wishlist.splice(state.wishlist.indexOf(id), 1);
+          saveWishlist();
+          renderProducts();
+          renderWishlist();
+        }),
+      );
+    }
+
+    openWishlistBtn.addEventListener("click", () => {
+      wishlistPanel.classList.add("open");
+      overlay.classList.add("show");
+    });
+    closeWishlistBtn.addEventListener("click", () => {
+      wishlistPanel.classList.remove("open");
+      overlay.classList.remove("show");
+    });
+
+    let quickProductId = null;
+    function onQuick(e) {
+      const id = Number(e.currentTarget.dataset.id),
+        prod = PRODUCTS.find((p) => p.id === id);
+      if (!prod) return;
+      quickProductId = id;
+      quickImg.src = prod.img;
+      quickTitle.textContent = prod.name;
+      quickDesc.textContent = prod.desc || "Fresh item.";
+      quickPrice.textContent = prod.price;
+      openModal(quickModal);
+    }
+    quickClose.addEventListener("click", () => closeModal(quickModal));
+    quickAdd.addEventListener("click", () => {
+      if (!quickProductId) return;
+      if (!state.auth.isLoggedIn) {
+        closeModal(quickModal);
+        openModal(authModal);
+        showToast("Please login");
+        return;
+      }
+      state.cart[quickProductId] = (state.cart[quickProductId] || 0) + 1;
+      saveCart();
+      renderCart();
+      closeModal(quickModal);
+      showToast("Added to cart");
+    });
+
+    function openCart() {
+      cartPanel.classList.add("open");
+      overlay.classList.add("show");
+    }
+    function closeCart() {
+      cartPanel.classList.remove("open");
+      overlay.classList.remove("show");
+    }
+    openCartBtn.addEventListener("click", () => {
+      if (cartPanel.classList.contains("open")) closeCart();
+      else openCart();
+    });
+    document
+      .getElementById("closeCartBtn")
+      .addEventListener("click", closeCart);
+
+    overlay.addEventListener("click", () => {
+      closeCart();
+      wishlistPanel.classList.remove("open");
+      [
+        quickModal,
+        authModal,
+        profileModal,
+        ordersModal,
+        document.getElementById("addressModal"),
+        document.getElementById("paymentModal"),
+        document.getElementById("contactModal"),
+        document.getElementById("faqModal"),
+        document.getElementById("shippingModal"),
+        document.getElementById("refundModal"),
+        document.getElementById("tcModal"),
+      ].forEach((m) => {
+        if (m) closeModal(m);
+      });
+      profileDropdown.classList.remove("show");
+      overlay.classList.remove("show");
+    });
+
+    function renderAuthUI() {
+      if (state.auth.isLoggedIn && state.auth.user) {
+        openLogin.style.display = "none";
+        userProfile.style.display = "block";
+        const initial = state.auth.user.email[0].toUpperCase();
+        ["userAvatar", "userAvatarLarge"].forEach(
+          (id) => (document.getElementById(id).textContent = initial),
+        );
+        const name =
+          state.auth.user.name || state.auth.user.email.split("@")[0];
+        document.getElementById("userName").textContent = name;
+        document.getElementById("profileName").textContent = name;
+        document.getElementById("profileEmail").textContent =
+          state.auth.user.email;
+        profileAvatarXl.textContent = initial;
+        profileDisplayName.textContent = name;
+        profileDisplayEmail.textContent = state.auth.user.email;
+        profileJoinDate.textContent =
+          state.auth.user.joinDate || "March 2026";
+      } else {
+        openLogin.style.display = "inline-flex";
+        userProfile.style.display = "none";
+      }
+    }
+
+    document.getElementById("tabLogin").addEventListener("click", () => {
+      document.getElementById("tabLogin").classList.add("active");
+      document.getElementById("tabSignup").classList.remove("active");
+      document.getElementById("authLoginForm").style.display = "";
+      document.getElementById("authSignupForm").style.display = "none";
+      document.getElementById("authSubmit").textContent = "Login";
+    });
+    document.getElementById("tabSignup").addEventListener("click", () => {
+      document.getElementById("tabSignup").classList.add("active");
+      document.getElementById("tabLogin").classList.remove("active");
+      document.getElementById("authSignupForm").style.display = "";
+      document.getElementById("authLoginForm").style.display = "none";
+      document.getElementById("authSubmit").textContent = "Sign Up";
+    });
+
+    async function loginUser(email, password) {
+      if (!email || !password) {
+        showToast("Please enter credentials");
+        return false;
+      }
+      try {
+        const res = await fetch(`${API_URL}/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
         });
-
-        function renderAuthUI() {
-            if (state.auth.isLoggedIn && state.auth.user) {
-                openLogin.style.display = 'none'; userProfile.style.display = 'block';
-                const initial = state.auth.user.email[0].toUpperCase();
-                ['userAvatar', 'userAvatarLarge'].forEach(id => document.getElementById(id).textContent = initial);
-                const name = state.auth.user.name || state.auth.user.email.split('@')[0];
-                document.getElementById('userName').textContent = name;
-                document.getElementById('profileName').textContent = name;
-                document.getElementById('profileEmail').textContent = state.auth.user.email;
-                profileAvatarXl.textContent = initial; profileDisplayName.textContent = name;
-                profileDisplayEmail.textContent = state.auth.user.email; profileJoinDate.textContent = state.auth.user.joinDate || 'March 2026';
-            } else { openLogin.style.display = 'inline-flex'; userProfile.style.display = 'none'; }
-        }
-
-        document.getElementById('tabLogin').addEventListener('click', () => {
-            document.getElementById('tabLogin').classList.add('active'); document.getElementById('tabSignup').classList.remove('active');
-            document.getElementById('authLoginForm').style.display = ''; document.getElementById('authSignupForm').style.display = 'none';
-            document.getElementById('authSubmit').textContent = 'Login';
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Login failed");
+        state.auth = { isLoggedIn: true, user: data.user };
+        saveAuth();
+        renderAuthUI();
+        showToast(`Welcome back, ${data.user.name}!`);
+        return true;
+      } catch (err) {
+        showToast(err.message);
+        return false;
+      }
+    }
+    async function signupUser(name, email, password) {
+      if (!name || !email || !password) {
+        showToast("Please fill all fields");
+        return false;
+      }
+      try {
+        const res = await fetch(`${API_URL}/signup`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password }),
         });
-        document.getElementById('tabSignup').addEventListener('click', () => {
-            document.getElementById('tabSignup').classList.add('active'); document.getElementById('tabLogin').classList.remove('active');
-            document.getElementById('authSignupForm').style.display = ''; document.getElementById('authLoginForm').style.display = 'none';
-            document.getElementById('authSubmit').textContent = 'Sign Up';
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Signup failed");
+        state.auth = {
+          isLoggedIn: true,
+          user: { name, email, joinDate: "Just now" },
+        };
+        saveAuth();
+        renderAuthUI();
+        showToast(`Welcome to FreshBasket!`);
+        return true;
+      } catch (err) {
+        showToast(err.message);
+        return false;
+      }
+    }
+
+    profileBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      profileDropdown.classList.toggle("show");
+    });
+    logoutBtn.addEventListener("click", () => {
+      state.auth = { isLoggedIn: false, user: null };
+      saveAuth();
+      renderAuthUI();
+      showToast("Logged out");
+      profileDropdown.classList.remove("show");
+    });
+    viewProfileBtn.addEventListener("click", () => {
+      profileDropdown.classList.remove("show");
+      openModal(profileModal);
+    });
+    viewOrdersBtn.addEventListener("click", () => {
+      profileDropdown.classList.remove("show");
+      renderOrders();
+      openModal(ordersModal);
+    });
+    profileModalClose.addEventListener("click", () =>
+      closeModal(profileModal),
+    );
+    profileModalCancel.addEventListener("click", () =>
+      closeModal(profileModal),
+    );
+    ordersModalClose.addEventListener("click", () => closeModal(ordersModal));
+    ordersModalCancel.addEventListener("click", () =>
+      closeModal(ordersModal),
+    );
+
+    document
+      .getElementById("authSubmit")
+      .addEventListener("click", async () => {
+        const isSu =
+          document.getElementById("authSignupForm").style.display !== "none";
+        let ok = isSu
+          ? await signupUser(
+            document.getElementById("authName").value,
+            document.getElementById("authEmailSu").value,
+            document.getElementById("authPassSu").value,
+          )
+          : await loginUser(
+            document.getElementById("authEmail").value,
+            document.getElementById("authPass").value,
+          );
+        if (ok) {
+          closeModal(authModal);
+          renderProducts();
+        }
+      });
+    openLogin.addEventListener("click", () => openModal(authModal));
+    authClose.addEventListener("click", () => closeModal(authModal));
+
+    function getOrderStatus(id) {
+      const s = ["placed", "shipped", "delivered"];
+      return s[id % 3];
+    }
+    function getOrderStatusLabel(s) {
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    }
+
+    async function renderOrders() {
+      ordersContainer.innerHTML = "";
+      if (!state.auth.user) return;
+      try {
+        const res = await fetch(`${API_URL}/orders/${state.auth.user.email}`);
+        const orders = await res.json();
+        if (!orders.length) {
+          ordersContainer.innerHTML =
+            '<div class="empty-state-msg">No orders yet.</div>';
+          return;
+        }
+        orders.forEach((o) => {
+          const dv = document.createElement("div");
+          dv.className = "order-item";
+          dv.innerHTML = `<div class="order-header"><span>Order #${String(o.id).slice(-4)}</span><span class="order-status ${o.status}">${o.status.toUpperCase()}</span></div><ul class="order-details"><li>${o.items_summary}</li></ul><div class="order-footer"><span>Total: Rs.${o.total_amount}</span></div>`;
+          ordersContainer.appendChild(dv);
         });
+      } catch (err) {
+        console.error(err);
+      }
+    }
 
-        async function loginUser(email, password) {
-            if (!email || !password) { showToast('Please enter credentials'); return false; }
-            try {
-                const res = await fetch(`${API_URL}/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.error || 'Login failed');
-                state.auth = { isLoggedIn: true, user: data.user };
-                saveAuth(); renderAuthUI(); showToast(`Welcome back, ${data.user.name}!`); return true;
-            } catch (err) {
-                showToast(err.message); return false;
-            }
-        }
-        async function signupUser(name, email, password) {
-            if (!name || !email || !password) { showToast('Please fill all fields'); return false; }
-            try {
-                const res = await fetch(`${API_URL}/signup`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, password })
-                });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.error || 'Signup failed');
-                state.auth = { isLoggedIn: true, user: { name, email, joinDate: 'Just now' } };
-                saveAuth(); renderAuthUI(); showToast(`Welcome to FreshBasket!`); return true;
-            } catch (err) {
-                showToast(err.message); return false;
-            }
-        }
+    const OFFERS = [
+      {
+        img: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1400",
+        title: "Fruits",
+      },
+      {
+        img: "https://d1hm90tax3m3th.cloudfront.net/web/vegetables.jpg",
+        title: "Veggies",
+      },
+    ];
+    function renderCarousel() {
+      carouselTrack.innerHTML = "";
+      carouselDots.innerHTML = "";
+      OFFERS.forEach((o, i) => {
+        const s = document.createElement("div");
+        s.className = "slide";
+        s.innerHTML = `<img src="${o.img}" style="width:100%;height:200px;object-fit:cover">`;
+        carouselTrack.appendChild(s);
+        const dot = document.createElement("div");
+        dot.className = "dot" + (i === 0 ? " active" : "");
+        dot.addEventListener("click", () => moveCarousel(i));
+        carouselDots.appendChild(dot);
+      });
+      setInterval(() => {
+        carouselIndex = (carouselIndex + 1) % OFFERS.length;
+        moveCarousel(carouselIndex);
+      }, 4000);
+    }
+    let carouselIndex = 0;
+    function moveCarousel(i) {
+      carouselIndex = i;
+      carouselTrack.style.transform = `translateX(-${i * 100}%)`;
+      $all(".dot").forEach((d, idx) =>
+        d.classList.toggle("active", idx === i),
+      );
+    }
 
-        profileBtn.addEventListener('click', (e) => { e.stopPropagation(); profileDropdown.classList.toggle('show'); });
-        logoutBtn.addEventListener('click', () => { state.auth = { isLoggedIn: false, user: null }; saveAuth(); renderAuthUI(); showToast('Logged out'); profileDropdown.classList.remove('show'); });
-        viewProfileBtn.addEventListener('click', () => { profileDropdown.classList.remove('show'); openModal(profileModal); });
-        viewOrdersBtn.addEventListener('click', () => { profileDropdown.classList.remove('show'); renderOrders(); openModal(ordersModal); });
-        profileModalClose.addEventListener('click', () => closeModal(profileModal));
-        profileModalCancel.addEventListener('click', () => closeModal(profileModal));
-        ordersModalClose.addEventListener('click', () => closeModal(ordersModal));
-        ordersModalCancel.addEventListener('click', () => closeModal(ordersModal));
+    checkoutBtn.addEventListener("click", () => {
+      if (!getCartCount()) return showToast("Cart is empty");
+      if (!state.auth.isLoggedIn) {
+        closeCart();
+        openModal(authModal);
+        return;
+      }
+      closeCart();
+      openModal(document.getElementById("addressModal"));
+    });
 
-        document.getElementById('authSubmit').addEventListener('click', async () => {
-            const isSu = document.getElementById('authSignupForm').style.display !== 'none';
-            let ok = isSu ? await signupUser(document.getElementById('authName').value, document.getElementById('authEmailSu').value, document.getElementById('authPassSu').value)
-                : await loginUser(document.getElementById('authEmail').value, document.getElementById('authPass').value);
-            if (ok) { closeModal(authModal); renderProducts(); }
+    document.getElementById("addrNextBtn").addEventListener("click", () => {
+      const n = document.getElementById("addrName").value,
+        p = document.getElementById("addrPhone").value;
+      const s = document.getElementById("addrStreet").value,
+        c = document.getElementById("addrCity").value;
+      const st = document.getElementById("addrState").value,
+        pin = document.getElementById("addrPin").value;
+      if (!n || !p || !s || !c || !st || !pin)
+        return showToast("Fill all fields");
+      state.deliveryAddress = {
+        name: n,
+        phone: p,
+        address: s,
+        city: c,
+        state: st,
+        pin: pin,
+      };
+      closeModal(document.getElementById("addressModal"));
+      openModal(document.getElementById("paymentModal"));
+    });
+
+    $all(".pay-card").forEach((c) =>
+      c.addEventListener("click", () => {
+        $all(".pay-card").forEach((x) => {
+          x.classList.remove("selected");
+          x.querySelector(".pay-check").textContent = "";
         });
-        openLogin.addEventListener('click', () => openModal(authModal));
-        authClose.addEventListener('click', () => closeModal(authModal));
+        c.classList.add("selected");
+        c.querySelector(".pay-check").textContent = "OK";
+        state.paymentMethod = c.dataset.method;
+      }),
+    );
 
-        function getOrderStatus(id) { const s = ['placed', 'shipped', 'delivered']; return s[id % 3]; }
-        function getOrderStatusLabel(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+    document.getElementById("placeOrderBtn").addEventListener("click", () => {
+      const billModal = document.getElementById("billModal"),
+        billContent = document.getElementById("billContent");
+      billContent.innerHTML = "";
+      Object.keys(state.cart).forEach((id) => {
+        const p = PRODUCTS.find((x) => x.id == id);
+        if (p)
+          billContent.innerHTML += `<div class="bill-item"><span>${p.name} x ${state.cart[id]}</span><span>Rs.${p.price * state.cart[id]}</span></div>`;
+      });
+      document.getElementById("billTotal").textContent = getCartTotal();
+      closeModal(document.getElementById("paymentModal"));
+      openModal(billModal);
+    });
 
-        async function renderOrders() {
-            ordersContainer.innerHTML = '';
-            if (!state.auth.user) return;
-            try {
-                const res = await fetch(`${API_URL}/orders/${state.auth.user.email}`);
-                const orders = await res.json();
-                if (!orders.length) { ordersContainer.innerHTML = '<div class="empty-state-msg">No orders yet.</div>'; return; }
-                orders.forEach(o => {
-                    const dv = document.createElement('div'); dv.className = 'order-item';
-                    dv.innerHTML = `<div class="order-header"><span>Order #${String(o.id).slice(-4)}</span><span class="order-status ${o.status}">${o.status.toUpperCase()}</span></div><ul class="order-details"><li>${o.items_summary}</li></ul><div class="order-footer"><span>Total: Rs.${o.total_amount}</span></div>`;
-                    ordersContainer.appendChild(dv);
-                });
-            } catch (err) { console.error(err); }
-        }
+    async function finalizeOrder() {
+      if (!state.auth.user) return showToast("Please login");
+      const items = Object.keys(state.cart)
+        .map((k) => {
+          const p = PRODUCTS.find((x) => x.id == k);
+          return p
+            ? { name: p.name, qty: state.cart[k], price: p.price }
+            : null;
+        })
+        .filter((x) => x);
 
-        const OFFERS = [
-            { img: 'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1400', title: 'Fruits' },
-            { img: 'https://d1hm90tax3m3th.cloudfront.net/web/vegetables.jpg', title: 'Veggies' }
-        ];
-        function renderCarousel() {
-            carouselTrack.innerHTML = ''; carouselDots.innerHTML = '';
-            OFFERS.forEach((o, i) => {
-                const s = document.createElement('div'); s.className = 'slide'; s.innerHTML = `<img src="${o.img}" style="width:100%;height:200px;object-fit:cover">`;
-                carouselTrack.appendChild(s);
-                const dot = document.createElement('div'); dot.className = 'dot' + (i === 0 ? ' active' : '');
-                dot.addEventListener('click', () => moveCarousel(i)); carouselDots.appendChild(dot);
-            });
-            setInterval(() => { carouselIndex = (carouselIndex + 1) % OFFERS.length; moveCarousel(carouselIndex); }, 4000);
-        }
-        let carouselIndex = 0; function moveCarousel(i) { carouselIndex = i; carouselTrack.style.transform = `translateX(-${i * 100}%)`; $all('.dot').forEach((d, idx) => d.classList.toggle('active', idx === i)); }
-
-        checkoutBtn.addEventListener('click', () => {
-            if (!getCartCount()) return showToast('Cart is empty');
-            if (!state.auth.isLoggedIn) { closeCart(); openModal(authModal); return; }
-            closeCart(); openModal(document.getElementById('addressModal'));
+      try {
+        const res = await fetch(`${API_URL}/place-order`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userEmail: state.auth.user.email,
+            total: getCartTotal(),
+            discount: state.discount,
+            method: state.paymentMethod,
+            items: items,
+            address: state.deliveryAddress,
+          }),
         });
+        if (!res.ok) throw new Error("Failed to place order");
+        state.cart = {};
+        state.discount = 0;
+        saveCart();
+        renderCart();
+        closeModal(document.getElementById("billModal"));
+        showToast("Order Placed Successfully! 🎉");
+      } catch (err) {
+        showToast(err.message);
+      }
+    }
 
-        document.getElementById('addrNextBtn').addEventListener('click', () => {
-            const n = document.getElementById('addrName').value, p = document.getElementById('addrPhone').value;
-            const s = document.getElementById('addrStreet').value, c = document.getElementById('addrCity').value;
-            const st = document.getElementById('addrState').value, pin = document.getElementById('addrPin').value;
-            if (!n || !p || !s || !c || !st || !pin) return showToast('Fill all fields');
-            state.deliveryAddress = { name: n, phone: p, address: s, city: c, state: st, pin: pin };
-            closeModal(document.getElementById('addressModal')); openModal(document.getElementById('paymentModal'));
+    document
+      .getElementById("billConfirmBtn")
+      .addEventListener("click", finalizeOrder);
+    document
+      .getElementById("billCancelFinal")
+      .addEventListener("click", () =>
+        closeModal(document.getElementById("billModal")),
+      );
+    document
+      .getElementById("billClose")
+      ?.addEventListener("click", () =>
+        closeModal(document.getElementById("billModal")),
+      );
+
+    document
+      .querySelector(".newsletter-btn")
+      .addEventListener("click", () => {
+        showToast("Subscribed!");
+      });
+    document
+      .getElementById("contactSendBtn")
+      .addEventListener("click", () => {
+        closeModal(document.getElementById("contactModal"));
+        showToast("Message Sent!");
+      });
+
+    function wireModal(l, m, c) {
+      const el = document.getElementById(l);
+      if (el)
+        el.addEventListener("click", (e) => {
+          e.preventDefault();
+          openModal(document.getElementById(m));
         });
+      c.forEach((i) => {
+        const b = document.getElementById(i);
+        if (b)
+          b.addEventListener("click", () =>
+            closeModal(document.getElementById(m)),
+          );
+      });
+    }
+    wireModal("faqLink", "faqModal", ["faqModalClose", "faqModalClose2"]);
+    wireModal("shippingLink", "shippingModal", [
+      "shippingModalClose",
+      "shippingModalClose2",
+    ]);
+    wireModal("refundLink", "refundModal", [
+      "refundModalClose",
+      "refundModalClose2",
+    ]);
+    wireModal("tcLink", "tcModal", ["tcModalClose", "tcModalClose2"]);
+    wireModal("footerContactLink", "contactModal", [
+      "contactModalClose",
+      "contactModalClose2",
+    ]);
 
-        $all('.pay-card').forEach(c => c.addEventListener('click', () => {
-            $all('.pay-card').forEach(x => { x.classList.remove('selected'); x.querySelector('.pay-check').textContent = ''; });
-            c.classList.add('selected'); c.querySelector('.pay-check').textContent = 'OK'; state.paymentMethod = c.dataset.method;
-        }));
+    const backToTop = document.getElementById("backToTop");
+    window.addEventListener("scroll", () =>
+      backToTop.classList.toggle("show", window.scrollY > 300),
+    );
+    backToTop.addEventListener("click", () =>
+      window.scrollTo({ top: 0, behavior: "smooth" }),
+    );
 
-        document.getElementById('placeOrderBtn').addEventListener('click', () => {
-            const billModal = document.getElementById('billModal'), billContent = document.getElementById('billContent');
-            billContent.innerHTML = '';
-            Object.keys(state.cart).forEach(id => {
-                const p = PRODUCTS.find(x => x.id == id);
-                if (p) billContent.innerHTML += `<div class="bill-item"><span>${p.name} x ${state.cart[id]}</span><span>Rs.${p.price * state.cart[id]}</span></div>`;
-            });
-            document.getElementById('billTotal').textContent = getCartTotal();
-            closeModal(document.getElementById('paymentModal'));
-            openModal(billModal);
-        });
+    async function init() {
+      showSkeletons();
+      try {
+        const res = await fetch(`${API_URL}/products`);
+        const data = await res.json();
+        PRODUCTS = data;
+        state.products = PRODUCTS.slice();
+      } catch (err) {
+        console.error("Failed to fetch products:", err);
+      }
 
-        async function finalizeOrder() {
-            if (!state.auth.user) return showToast('Please login');
-            const items = Object.keys(state.cart).map(k => {
-                const p = PRODUCTS.find(x => x.id == k);
-                return p ? { name: p.name, qty: state.cart[k], price: p.price } : null;
-            }).filter(x => x);
+      renderCategories();
+      setTimeout(() => {
+        renderProducts();
+        renderCarousel();
+        renderCart();
+        renderWishlist();
+        updateCartBadge();
+      }, 600);
+      setupSearch();
+      renderAuthUI();
+    }
+    function updateCartBadge() {
+      cartCountBadge.textContent = getCartCount();
+    }
+    const cartObserver = new MutationObserver(() => updateCartBadge());
+    cartObserver.observe(cartItemsWrap, { childList: true, subtree: true });
+    init();
 
-            try {
-                const res = await fetch(`${API_URL}/place-order`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        userEmail: state.auth.user.email,
-                        total: getCartTotal(),
-                        discount: state.discount,
-                        method: state.paymentMethod,
-                        items: items,
-                        address: state.deliveryAddress
-                    })
-                });
-                if (!res.ok) throw new Error('Failed to place order');
-                state.cart = {}; state.discount = 0; saveCart(); renderCart();
-                closeModal(document.getElementById('billModal')); showToast('Order Placed Successfully! 🎉');
-            } catch (err) {
-                showToast(err.message);
-            }
-        }
+    const refundLink = document.getElementById("openRefundModal");
+    const refundModal = document.getElementById("refundModal");
 
-        document.getElementById('billConfirmBtn').addEventListener('click', finalizeOrder);
-        document.getElementById('billCancelFinal').addEventListener('click', () => closeModal(document.getElementById('billModal')));
-        document.getElementById('billClose')?.addEventListener('click', () => closeModal(document.getElementById('billModal')));
-
-        document.querySelector('.newsletter-btn').addEventListener('click', () => { showToast('Subscribed!'); });
-        document.getElementById('contactSendBtn').addEventListener('click', () => { closeModal(document.getElementById('contactModal')); showToast('Message Sent!'); });
-
-        function wireModal(l, m, c) {
-            const el = document.getElementById(l); if (el) el.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById(m)); });
-            c.forEach(i => { const b = document.getElementById(i); if (b) b.addEventListener('click', () => closeModal(document.getElementById(m))); });
-        }
-        wireModal('faqLink', 'faqModal', ['faqModalClose', 'faqModalClose2']);
-        wireModal('shippingLink', 'shippingModal', ['shippingModalClose', 'shippingModalClose2']);
-        wireModal('refundLink', 'refundModal', ['refundModalClose', 'refundModalClose2']);
-        wireModal('tcLink', 'tcModal', ['tcModalClose', 'tcModalClose2']);
-        wireModal('footerContactLink', 'contactModal', ['contactModalClose', 'contactModalClose2']);
-
-        const backToTop = document.getElementById('backToTop');
-        window.addEventListener('scroll', () => backToTop.classList.toggle('show', window.scrollY > 300));
-        backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-
-        async function init() {
-            showSkeletons();
-            try {
-                const res = await fetch(`${API_URL}/products`);
-                const data = await res.json();
-                PRODUCTS = data;
-                state.products = PRODUCTS.slice();
-            } catch (err) { console.error('Failed to fetch products:', err); }
-
-            renderCategories();
-            setTimeout(() => { renderProducts(); renderCarousel(); renderCart(); renderWishlist(); updateCartBadge(); }, 600);
-            setupSearch(); renderAuthUI();
-        }
-        function updateCartBadge() { cartCountBadge.textContent = getCartCount(); }
-        const cartObserver = new MutationObserver(() => updateCartBadge());
-        cartObserver.observe(cartItemsWrap, { childList: true, subtree: true });
-        init();
-    </script>
-
-
+    if (refundLink && refundModal) {
+      refundLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        openModal(refundModal);
+      });
+      const close1 = document.getElementById("refundModalClose");
+      const close2 = document.getElementById("refundModalClose2");
+      if (close1) close1.addEventListener("click", () => closeModal(refundModal));
+      if (close2) close2.addEventListener("click", () => closeModal(refundModal));
+    }
+  </script>
 </body>
 
 </html>
