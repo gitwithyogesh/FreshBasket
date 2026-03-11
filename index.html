@@ -295,7 +295,7 @@
         <button class="btn-primary" id="authSubmit">Login</button>
       </div>
       <div style="margin-top: 8px; text-align: center" class="muted">
-        Demo mode - localStorage only.
+        Your Data it Safe With Us 😊
       </div>
     </div>
   </div>
@@ -717,7 +717,148 @@
 
   <script>
     const API_URL = "http://localhost:5000/api";
-    let PRODUCTS = []; // Fetched once from DB
+    let PRODUCTS = [
+      {
+        id: 1,
+        name: "Banana (1 dozen)",
+        category: "Fruits",
+        price: 60,
+        rating: 4.5,
+        stock: 50,
+        img: "https://m.media-amazon.com/images/I/51W9iO9AwhL._AC_UF1000,1000_QL80_.jpg",
+        desc: "Sweet ripe bananas, perfect for breakfast and smoothies."
+      },
+      {
+        id: 2,
+        name: "Tomato (1kg)",
+        category: "Vegetables",
+        price: 40,
+        rating: 4.2,
+        stock: 30,
+        img: "https://media.istockphoto.com/id/1132371208/photo/three-ripe-tomatoes-on-green-branch.jpg?s=612x612&w=0&k=20&c=qVjDb5Tk3-UccV-E9gqvoz97PTsP1QmBftw27qA9kEo=",
+        desc: "Fresh juicy tomatoes, farm-picked daily."
+      },
+      {
+        id: 3,
+        name: "Cow Milk (1L)",
+        category: "Dairy",
+        price: 55,
+        rating: 4.8,
+        stock: 100,
+        img: "https://media.istockphoto.com/id/1297005860/photo/raw-milk-being-poured-into-container.jpg?s=612x612&w=0&k=20&c=5Xumh49_zYs9GjLkGpZXM41tS17K8M-svN9jLMv0JpE=",
+        desc: "Fresh full-cream cow milk sourced locally every morning."
+      },
+      {
+        id: 4,
+        name: "Potato (1kg)",
+        category: "Vegetables",
+        price: 35,
+        rating: 4.0,
+        stock: 60,
+        img: "https://cdn.mos.cms.futurecdn.net/iC7HBvohbJqExqvbKcV3pP.jpg",
+        desc: "Starchy potatoes, versatile in cooking."
+      },
+      {
+        id: 5,
+        name: "Apples (1kg)",
+        category: "Fruits",
+        price: 200,
+        rating: 4.6,
+        stock: 25,
+        img: "https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?q=80&w=800&auto=format&fit=crop",
+        desc: "Crisp sweet apples, great for snacking."
+      },
+      {
+        id: 6,
+        name: "Paneer (200g)",
+        category: "Dairy",
+        price: 90,
+        rating: 4.7,
+        stock: 15,
+        img: "https://umamigirl.com/wp-content/uploads/2023/04/How-to-Make-Paneer-at-Home-Umami-Girl.jpg",
+        desc: "Fresh soft paneer, perfect for curries and grills."
+      },
+      {
+        id: 7,
+        name: "Snacks Pack",
+        category: "Snacks",
+        price: 45,
+        rating: 3.8,
+        stock: 80,
+        img: "https://cdnimg.webstaurantstore.com/uploads/seo_category/2023/11/Individually-Wrapped-Snacks/wrapped-snacks_one.jpg",
+        desc: "Tasty crunchy assorted snack pack."
+      },
+      {
+        id: 8,
+        name: "Orange Juice (1L)",
+        category: "Beverages",
+        price: 120,
+        rating: 4.3,
+        stock: 40,
+        img: "https://media.istockphoto.com/id/1158980367/photo/woman-hand-pouring-orange-juice-on-glasses-with-slice-orange-on-wooden-background.jpg?s=612x612&w=0&k=20&c=7eariYAOV0LRcYtl3u05K4vnSN7IJ5X7egV1gu1ALF0=",
+        desc: "Fresh-squeezed orange juice, no added sugar."
+      },
+      {
+        id: 9,
+        name: "Spinach (250g)",
+        category: "Vegetables",
+        price: 25,
+        rating: 4.1,
+        stock: 35,
+        img: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?q=80&w=800&auto=format&fit=crop",
+        desc: "Fresh organic baby spinach, rich in iron."
+      },
+      {
+        id: 10,
+        name: "Mango (1kg)",
+        category: "Fruits",
+        price: 150,
+        rating: 4.9,
+        stock: 20,
+        img: "https://images.unsplash.com/photo-1591073113125-e46713c829ed?q=80&w=800&auto=format&fit=crop",
+        desc: "Sweet Alphonso mangoes - the king of fruits."
+      },
+      {
+        id: 11,
+        name: "Curd (500g)",
+        category: "Dairy",
+        price: 45,
+        rating: 4.5,
+        stock: 55,
+        img: "https://tiimg.tistatic.com/fp/1/007/868/good-source-of-minerals-calcium-chemical-free-fresh-white-curd-443.jpg",
+        desc: "Thick creamy dahi, perfect with meals."
+      },
+      {
+        id: 12,
+        name: "Green Tea (25 bags)",
+        category: "Beverages",
+        price: 180,
+        rating: 4.4,
+        stock: 30,
+        img: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?q=80&w=800&auto=format&fit=crop",
+        desc: "Premium antioxidant-rich green tea bags."
+      },
+      {
+        id: 13,
+        name: "Whole Wheat Bread",
+        category: "Bakery",
+        price: 55,
+        rating: 4.3,
+        stock: 25,
+        img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800&auto=format&fit=crop",
+        desc: "Freshly baked whole wheat bread, no preservatives."
+      },
+      {
+        id: 14,
+        name: "Basmati Rice (5kg)",
+        category: "Pantry",
+        price: 450,
+        rating: 4.6,
+        stock: 18,
+        img: "https://images.unsplash.com/photo-1586201375761-83865001e31c?q=80&w=800&auto=format&fit=crop",
+        desc: "Premium aged Basmati rice, long-grain and aromatic."
+      }
+    ];
 
     const state = {
       products: PRODUCTS.slice(),
